@@ -1,5 +1,6 @@
 package com.example.calorietracker;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -31,6 +32,15 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+
+        Button btnSignUp = findViewById(R.id.btnSignUp);
+        btnSignUp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this,
+                        SignUpActivity.class);
+                startActivity(intent);
+            } });
     }
 
     private class LoginAsyncTask extends AsyncTask<String, Void, String> {
