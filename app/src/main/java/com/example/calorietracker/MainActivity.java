@@ -59,8 +59,8 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String response) {
-            TextView tvValidation = findViewById(R.id.tvValidation);
-            tvValidation.setText(response);
+            TextView tvLoginResult = findViewById(R.id.tvLoginResult);
+            tvLoginResult.setText(response);
         }
     }
 }
