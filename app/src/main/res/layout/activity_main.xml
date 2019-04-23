@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -8,70 +8,261 @@
     tools:context=".MainActivity"
     android:orientation="vertical">
 
-    <TextView
-        android:layout_marginTop="40pt"
-        android:textSize="12pt"
-        android:layout_gravity="center"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Welcome to Calorie Tracker"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:layout_marginTop="50pt"
-        android:textSize="10pt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="    Username:"/>
-
-    <EditText
-
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/etUsername"
-        android:hint="    Enter username"/>
+        android:orientation="vertical">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="10pt"
-        android:text="    Password:"/>
+        <TextView
+            android:layout_marginTop="40pt"
+            android:textSize="12pt"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Welcome to Calorie Tracker"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginBottom="30pt"/>
 
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/etPassword"
-        android:hint="    Enter password"
-        android:inputType="textPassword"/>
+        <TextView
+            android:textSize="10pt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="  Username:"/>
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/tvLoginResult"/>
+        <EditText
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:id="@+id/btnLoginOrSignUp"
-        android:text="Login"/>
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/etUsername"
+            android:hint="  Username"/>
 
-    <TextView
-        android:textSize="8pt"
-        android:layout_marginTop="10pt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:text="Don't have an account? Let's create one!"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="10pt"
+            android:text="  Password:"/>
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:id="@+id/btnSignUp"
-        android:text="Sign Up"/>
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/etPassword"
+            android:hint="  Password"
+            android:inputType="textPassword"/>
 
-</LinearLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColorHighlight="@color/colorAccent"
+            android:id="@+id/tvLoginResult"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:id="@+id/btnLogin"
+            android:text="Login"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10pt"
+            android:text="Don't have an account? Let's create one!" />
+
+        <TextView
+            android:textSize="10pt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10pt"
+            android:text="  Full Name:" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/etFirstName"
+                android:layout_weight=".5"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:hint="  First" />
+
+            <EditText
+                android:id="@+id/etSurname"
+                android:layout_weight=".5"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:hint="  Last" />
+        </LinearLayout>
+
+        <TextView
+            android:textSize="10pt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10pt"
+            android:text="  Email:" />
+
+        <EditText
+            android:id="@+id/etEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textEmailAddress"
+            android:hint="  Email" />
+
+        <TextView
+            android:textSize="10pt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10pt"
+            android:text="  Birthday:" />
+
+        <DatePicker
+            android:id="@+id/dpDob"
+            android:textSize="10pt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:calendarViewShown="false"
+            android:datePickerMode="spinner"
+            android:spinnersShown="true" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:textSize="10pt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="  Height: " />
+
+            <EditText
+                android:id="@+id/etHeight"
+                android:layout_width="30pt"
+                android:layout_height="wrap_content"
+                android:inputType="number" />
+
+            <TextView
+                android:textSize="10pt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="cm; Weight: " />
+
+            <EditText
+                android:id="@+id/etWeight"
+                android:layout_width="30pt"
+                android:layout_height="wrap_content"
+                android:inputType="number" />
+
+            <TextView
+                android:textSize="10pt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="kg" />
+        </LinearLayout>
+
+        <TextView
+            android:textSize="10pt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="  Gender:"/>
+
+        <RadioGroup
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/rgGender">
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/rbMale"
+                android:text="Male"
+                android:textSize="10pt"
+                android:checked="true"/>
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Female"
+                android:textSize="10pt"
+                android:id="@+id/rbFemale"/>
+        </RadioGroup>
+
+        <TextView
+            android:textSize="10pt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10pt"
+            android:text="  Home Address:" />
+
+        <EditText
+            android:id="@+id/etAddress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="  Home address" />
+
+        <TextView
+            android:textSize="10pt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10pt"
+            android:text="  Postcode:" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="  Postcode"
+            android:inputType="number"
+            android:id="@+id/etPostcode">
+        </EditText>
+
+        <TextView
+            android:layout_marginTop="10pt"
+            android:textSize="10pt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="  Activity Level:"/>
+
+        <Spinner
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="10pt"
+            android:id="@+id/spActivityLv">
+        </Spinner>
+
+        <TextView
+            android:layout_marginTop="10pt"
+            android:textSize="10pt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="  Step Per Mile:"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:id="@+id/etStepPerMile"
+            android:hint="  Step Per Mile"/>
+
+        <TextView
+            android:layout_marginTop="10pt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/tvSignUpResult"
+            android:textColorHighlight="@color/colorAccent" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:id="@+id/btnSignUp"
+            android:text="Sign Up"/>
+
+    </LinearLayout>
+
+
+</ScrollView>
