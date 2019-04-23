@@ -14,7 +14,7 @@
         android:orientation="vertical">
 
         <TextView
-            android:layout_marginTop="40pt"
+            android:layout_marginTop="30pt"
             android:textSize="12pt"
             android:layout_gravity="center"
             android:layout_width="wrap_content"
@@ -27,13 +27,11 @@
             android:layout_marginBottom="30pt"/>
 
         <TextView
-            android:textSize="10pt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="  Username:"/>
 
         <EditText
-
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/etUsername"
@@ -42,7 +40,6 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="10pt"
             android:text="  Password:"/>
 
         <EditText
@@ -55,8 +52,8 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColorHighlight="@color/colorAccent"
-            android:id="@+id/tvLoginResult"/>
+            android:id="@+id/tvLoginFeedback"
+            android:textColorHighlight="@color/colorAccent"/>
 
         <Button
             android:layout_width="wrap_content"
@@ -66,17 +63,16 @@
             android:text="Login"/>
 
         <TextView
+            android:layout_marginBottom="10pt"
+            android:layout_marginTop="10pt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="10pt"
             android:text="Don't have an account? Let's create one!" />
 
         <TextView
-            android:textSize="10pt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10pt"
             android:text="  Full Name:" />
 
         <LinearLayout
@@ -100,10 +96,8 @@
         </LinearLayout>
 
         <TextView
-            android:textSize="10pt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10pt"
             android:text="  Email:" />
 
         <EditText
@@ -114,15 +108,12 @@
             android:hint="  Email" />
 
         <TextView
-            android:textSize="10pt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10pt"
             android:text="  Birthday:" />
 
         <DatePicker
             android:id="@+id/dpDob"
-            android:textSize="10pt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
@@ -135,7 +126,6 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:textSize="10pt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="  Height: " />
@@ -147,7 +137,6 @@
                 android:inputType="number" />
 
             <TextView
-                android:textSize="10pt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="cm; Weight: " />
@@ -159,14 +148,12 @@
                 android:inputType="number" />
 
             <TextView
-                android:textSize="10pt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="kg" />
         </LinearLayout>
 
         <TextView
-            android:textSize="10pt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="  Gender:"/>
@@ -181,22 +168,18 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/rbMale"
                 android:text="Male"
-                android:textSize="10pt"
                 android:checked="true"/>
 
             <RadioButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Female"
-                android:textSize="10pt"
                 android:id="@+id/rbFemale"/>
         </RadioGroup>
 
         <TextView
-            android:textSize="10pt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10pt"
             android:text="  Home Address:" />
 
         <EditText
@@ -206,23 +189,17 @@
             android:hint="  Home address" />
 
         <TextView
-            android:textSize="10pt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10pt"
             android:text="  Postcode:" />
 
-        <EditText
+        <Spinner
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="  Postcode"
-            android:inputType="number"
-            android:id="@+id/etPostcode">
-        </EditText>
+            android:id="@+id/spPostcode">
+        </Spinner>
 
         <TextView
-            android:layout_marginTop="10pt"
-            android:textSize="10pt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="  Activity Level:"/>
@@ -230,13 +207,10 @@
         <Spinner
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="10pt"
             android:id="@+id/spActivityLv">
         </Spinner>
 
         <TextView
-            android:layout_marginTop="10pt"
-            android:textSize="10pt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="  Step Per Mile:"/>
@@ -249,11 +223,10 @@
             android:hint="  Step Per Mile"/>
 
         <TextView
-            android:layout_marginTop="10pt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/tvSignUpResult"
-            android:textColorHighlight="@color/colorAccent" />
+            android:id="@+id/tvSignUpFeedback"
+            android:textColorHighlight="@color/colorAccent"/>
 
         <Button
             android:layout_width="wrap_content"
@@ -261,7 +234,6 @@
             android:layout_gravity="center_horizontal"
             android:id="@+id/btnSignUp"
             android:text="Sign Up"/>
-
     </LinearLayout>
 
 

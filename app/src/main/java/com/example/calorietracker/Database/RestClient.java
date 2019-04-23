@@ -12,7 +12,7 @@ import java.util.Scanner;
 
 public class RestClient {
     private final static String BASE_URL =
-            "http://118.139.80.42:8080/CalorieTrackerWS/webresources/";
+            "http://172.20.0.195:8080/CalorieTrackerWS/webresources/";
 
     public static String findCredentialByUsernameAndPasswordhash(String username, String password)
     {
@@ -118,5 +118,69 @@ public class RestClient {
             assert conn != null;
             conn.disconnect();
         }
+    }
+
+    public int countCredential() {
+        final String methodPath = "restws.credential/count/";
+        //initialise
+        URL url;
+        HttpURLConnection conn = null;
+        int result = -1;
+        //Making HTTP request
+        try {
+            url = new URL(BASE_URL + methodPath);
+            //open the connection
+            conn = (HttpURLConnection) url.openConnection();
+            //set the timeout
+            conn.setReadTimeout(10000);
+            conn.setConnectTimeout(15000);
+            //set the connection method to GET
+            conn.setRequestMethod("GET");
+            //add http headers to set your response type to json
+            conn.setRequestProperty("Content-Type", "application/json");
+            conn.setRequestProperty("Accept", "application/json");
+            //Read the response
+            Scanner inStream = new Scanner(conn.getInputStream());
+            //read the input stream and store it as string
+            result =  inStream.nextInt();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            assert conn != null;
+            conn.disconnect();
+        }
+        return result;
+    }
+
+    public int countUsers() {
+        final String methodPath = "restws.users/count/";
+        //initialise
+        URL url;
+        HttpURLConnection conn = null;
+        int result = -1;
+        //Making HTTP request
+        try {
+            url = new URL(BASE_URL + methodPath);
+            //open the connection
+            conn = (HttpURLConnection) url.openConnection();
+            //set the timeout
+            conn.setReadTimeout(10000);
+            conn.setConnectTimeout(15000);
+            //set the connection method to GET
+            conn.setRequestMethod("GET");
+            //add http headers to set your response type to json
+            conn.setRequestProperty("Content-Type", "application/json");
+            conn.setRequestProperty("Accept", "application/json");
+            //Read the response
+            Scanner inStream = new Scanner(conn.getInputStream());
+            //read the input stream and store it as string
+            result =  inStream.nextInt();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            assert conn != null;
+            conn.disconnect();
+        }
+        return result;
     }
 }
