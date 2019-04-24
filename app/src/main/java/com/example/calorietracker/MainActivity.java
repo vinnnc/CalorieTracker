@@ -1,5 +1,6 @@
 package com.example.calorietracker;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -13,9 +14,11 @@ import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.example.calorietracker.Database.Credential;
 import com.example.calorietracker.Database.RestClient;
+import com.example.calorietracker.Database.Users;
 
-import org.json.JSONException;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
@@ -132,18 +135,29 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... params) {
-            String result;
-            result = RestClient.findCredentialByUsernameAndPasswordhash(params[0], params[1]);
+            String result = RestClient.findCredentialByUsernameAndPasswordhash(params[0],
+                    params[1]);
             if (result.equals("[]"))
                 return "Username or password is incorrect, please try again";
             else {
+                int userId = -1;
+                String firstName = "";
                 try {
-                    JSONObject jsonObject = new JSONObject(result);
-                } catch (JSONException e) {
+                    JSONArray jsonArray = new JSONArray(result);
+                    JSONObject jsonCredentialObject = jsonArray.getJSONObject(0);
+                    JSONObject jsonUsersObject = jsonCredentialObject.getJSONObject("userid");
+                    userId = jsonUsersObject.getInt("userid");
+                    firstName = jsonUsersObject.getString("firstname");
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
-                //TODO - Link to dashboard page
-                return "Login successfully";
+                Intent intent = new Intent(MainActivity.this, SecondActivity.class);
+                Bundle bundle= new Bundle();
+                bundle.putInt("userId", userId);
+                bundle.putString("firstName", firstName);
+                intent.putExtras (bundle);
+                startActivity(intent);
+                return null;
             }
         }
 
@@ -157,21 +171,40 @@ public class MainActivity extends AppCompatActivity {
     private class SignUpAsyncTask extends AsyncTask<String, Void, String> {
         @Override
         protected String doInBackground(String... params) {
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-//            try {
-//                TODO - Need to be updated
-//                Credential credential = new Credential(params[0], Integer.valueOf(params[1]),
-//                        params[2]);
-//                Users users = new Users(Integer.valueOf(params[3]), params[4], params[5], params[6],
-//                        sdf.parse(params[7]), Integer.valueOf(params[8]), Integer.valueOf(params[9])
-//                        , params[10], params[11], Integer.valueOf(params[12]),
-//                        Integer.valueOf(params[13]), Integer.valueOf(params[14]));
-//                RestClient.createCredential(credential);
-//                RestClient.createUsers(users);
-//            } catch (ParseException e) {
-//                e.printStackTrace();
-//            }
-            return "Sign up successfully";
+            String findUsername = RestClient.findCredentialByUsername(params[0]);
+            String findCredential = RestClient.findCredentialByUsernameAndPasswordhash(params[0],
+                    params[1]);
+            if (!findUsername.equals("[]")){
+                EditText etUsername = findViewById(R.id.etUsername);
+                etUsername.setError("Username is already exist");
+                return "Sign Up failed";
+            }
+            if (!findCredential.equals("[]")){
+                LoginAsyncTask loginAsyncTask = new LoginAsyncTask();
+                loginAsyncTask.execute(params[0], params[1]);
+                return null;
+            }
+            int userId = RestClient.countUsers() + 1;
+            try {
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                Users users = new Users(userId, params[2], params[3], params[4],
+                        sdf.parse(params[5]), Integer.valueOf(params[6]),
+                        Integer.valueOf(params[7]), params[8], params[9],
+                        Integer.valueOf(params[10]), Integer.valueOf(params[11]),
+                        Integer.valueOf(params[12]));
+                Credential credential = new Credential(params[0], userId, params[1]);
+                RestClient.createUsers(users);
+                RestClient.createCredential(credential);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            Intent intent = new Intent(MainActivity.this, SecondActivity.class);
+            Bundle bundle= new Bundle();
+            bundle.putInt("userId", userId);
+            bundle.putString("firstName", params[2]);
+            intent.putExtras (bundle);
+            startActivity(intent);
+            return null;
         }
 
         @Override
