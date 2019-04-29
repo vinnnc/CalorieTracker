@@ -1,5 +1,6 @@
 package com.example.calorietracker;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -74,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
 
         Button btnSignUp = findViewById(R.id.btnSignUp);
         btnSignUp.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("SetTextI18n")
             @Override
             public void onClick(View v) {
                 SignUpAsyncTask signUpAsyncTask = new SignUpAsyncTask();
@@ -127,10 +129,15 @@ public class MainActivity extends AppCompatActivity {
                         gender.isEmpty() || address.isEmpty() || stepPerMile.isEmpty()))
                     signUpAsyncTask.execute(username, password, firstName, surname, email, dob,
                             height, weight, gender, address, postcode, activityLv,stepPerMile);
+                else {
+                    TextView tvSignUpFeedback = findViewById(R.id.tvSignUpFeedback);
+                    tvSignUpFeedback.setText("Sign up failed!");
+                }
             }
         });
     }
 
+    @SuppressLint("StaticFieldLeak")
     private class LoginAsyncTask extends AsyncTask<String, Void, String> {
 
         @Override
@@ -138,7 +145,7 @@ public class MainActivity extends AppCompatActivity {
             String result = RestClient.findCredentialByUsernameAndPasswordhash(params[0],
                     params[1]);
             if (result.equals("[]"))
-                return "Username or password is incorrect, please try again";
+                return "Username or password is incorrect, please try again!";
             else {
                 int userId = -1;
                 String firstName = "";
@@ -168,6 +175,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @SuppressLint("StaticFieldLeak")
     private class SignUpAsyncTask extends AsyncTask<String, Void, String> {
         @Override
         protected String doInBackground(String... params) {
@@ -186,6 +194,7 @@ public class MainActivity extends AppCompatActivity {
             }
             int userId = RestClient.countUsers() + 1;
             try {
+                @SuppressLint("SimpleDateFormat")
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
                 Users users = new Users(userId, params[2], params[3], params[4],
                         sdf.parse(params[5]), Integer.valueOf(params[6]),

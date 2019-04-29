@@ -3,21 +3,24 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_home"
-            android:title="Home" />
+            android:title="@string/home" />
         <item
             android:id="@+id/nav_my_daily_diet"
-            android:title="My Daily Diet" />
+            android:title="@string/my_daily_diet" />
         <item
             android:id="@+id/nav_steps"
-            android:title="Steps" />
+            android:title="@string/steps" />
         <item
             android:id="@+id/nav_calorie_tracker"
-            android:title="Calorie Tracker" />
+            android:title="@string/calorie_tracker" />
         <item
             android:id="@+id/nav_report"
-            android:title="Report" />
+            android:title="@string/report" />
         <item
             android:id="@+id/nav_map"
-            android:title="Map" />
+            android:title="@string/map" />
+        <item
+            android:id="@+id/nav_sign_out"
+            android:title="@string/sign_out" />
     </group>
 </menu>

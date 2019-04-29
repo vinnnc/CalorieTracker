@@ -14,4 +14,11 @@
     <string name="menu_tools">Tools</string>
     <string name="menu_share">Share</string>
     <string name="menu_send">Send</string>
+    <string name="home">Home</string>
+    <string name="my_daily_diet">My Daily Diet</string>
+    <string name="steps">Steps</string>
+    <string name="report">Report</string>
+    <string name="calorie_tracker">Calorie Tracker</string>
+    <string name="map">Map</string>
+    <string name="sign_out">Sign Out</string>
 </resources>
