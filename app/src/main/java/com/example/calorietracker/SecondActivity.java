@@ -35,6 +35,7 @@ public class SecondActivity extends AppCompatActivity
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         Objects.requireNonNull(getSupportActionBar()).setTitle("Calorie Tracker");
+
         FragmentManager fragmentManager = getFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.content_frame, new HomeFragment()).commit();
     }

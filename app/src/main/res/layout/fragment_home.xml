@@ -7,20 +7,17 @@
     android:orientation="vertical">
     
     <TextView
+        android:layout_marginTop="50dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textSize="15pt"
         android:id="@+id/tv_welcome" />
-    
+
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/tv_time"/>
-    
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/tv_goal"/>
-    
+        android:id="@+id/tv_time" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -29,7 +26,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Change the goal to: "/>
+            android:text="@string/today_s_calorie_goal_is"/>
 
         <EditText
             android:layout_width="30pt"
@@ -40,19 +37,25 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="KJ "/>
+            android:text="@string/kj"/>
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/btn_confirm"
-            android:text="Confirm"/>
+            android:id="@+id/btn_set"
+            android:text="@string/set"/>
     </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_goal"/>
     
     <ImageView
         android:layout_marginTop="10pt"
         android:layout_width="match_parent"
         android:layout_height="253dp"
-        android:src="@drawable/home_diet" />
+        android:src="@drawable/home_diet"
+        android:contentDescription="@string/home_diet" />
     
 </LinearLayout>
