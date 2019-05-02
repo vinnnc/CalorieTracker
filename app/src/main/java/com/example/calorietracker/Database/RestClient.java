@@ -12,7 +12,7 @@ import java.util.Scanner;
 
 public class RestClient {
     private final static String BASE_URL =
-            "http://118.139.67.186:8080/CalorieTrackerWS/webresources/";
+            "http://10.0.2.2:8080/CalorieTrackerWS/webresources/";
 
     public static String findCredentialByUsernameAndPasswordhash(String username, String password)
     {
@@ -154,50 +154,29 @@ public class RestClient {
             conn.disconnect();
         }
     }
+    /*
+     private final static String BASE_URL =
+            "http://10.0.2.2:8080/CalorieTrackerWS/webresources/";
 
-    public static int countCredential() {
-        final String methodPath = "restws.credential/count/";
-        //initialise
-        URL url;
-        HttpURLConnection conn = null;
-        int result = -1;
-        //Making HTTP request
-        try {
-            url = new URL(BASE_URL + methodPath);
-            //open the connection
-            conn = (HttpURLConnection) url.openConnection();
-            //set the timeout
-            conn.setReadTimeout(10000);
-            conn.setConnectTimeout(15000);
-            //set the connection method to GET
-            conn.setRequestMethod("GET");
-            //add http headers to set your response type to json
-            conn.setRequestProperty("Content-Type", "application/json");
-            conn.setRequestProperty("Accept", "application/json");
-            //Read the response
-            Scanner inStream = new Scanner(conn.getInputStream());
-            //read the input stream and store it as string
-            result =  inStream.nextInt();
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            assert conn != null;
-            conn.disconnect();
-        }
-        return result;
-    }
+    public static String findCredentialByUsernameAndPasswordhash(String username, String password)
+    {
+        final String methodPath = "restws.credential/findByUsernameAndPasswordhash/" + username +
+                "/" + password;
+     */
 
     public static int countUsers() {
-        final String methodPath = "restws.users/count/";
+        final String methodPath = "restws.users/count";
         //initialise
         URL url;
         HttpURLConnection conn = null;
-        int result = -1;
+        StringBuilder testResult = new StringBuilder();
+
         //Making HTTP request
         try {
             url = new URL(BASE_URL + methodPath);
             //open the connection
             conn = (HttpURLConnection) url.openConnection();
+            Log.i("url", url.toString());
             //set the timeout
             conn.setReadTimeout(10000);
             conn.setConnectTimeout(15000);
@@ -205,17 +184,20 @@ public class RestClient {
             conn.setRequestMethod("GET");
             //add http headers to set your response type to json
             conn.setRequestProperty("Content-Type", "application/json");
-            conn.setRequestProperty("Accept", "application/json");
+            conn.setRequestProperty("Accept", "text/plain");
             //Read the response
             Scanner inStream = new Scanner(conn.getInputStream());
             //read the input stream and store it as string
-            result =  inStream.nextInt();
+            while (inStream.hasNextLine()) {
+                testResult.append(inStream.nextLine());
+                Log.i("results ", testResult.toString());
+            }
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
             assert conn != null;
             conn.disconnect();
         }
-        return result;
+        return Integer.valueOf(testResult.toString());
     }
 }
