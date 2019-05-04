@@ -2,6 +2,7 @@ package com.example.calorietracker;
 
 import android.annotation.SuppressLint;
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -9,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.Spinner;
 
 import com.example.calorietracker.Database.Food;
@@ -64,8 +66,6 @@ public class MyDailyDietFragment extends Fragment {
         spFood.setAdapter(foodAdapter);
         spFood.setSelection(0);
 
-
-
         final ArrayList<Food> finalFoods = foods;
         spCategory.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -89,6 +89,16 @@ public class MyDailyDietFragment extends Fragment {
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+
+        Button btnAddFood = vMyDailyFragment.findViewById(R.id.btn_add_new_food);
+        btnAddFood.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentManager fragmentManager = getFragmentManager();
+                fragmentManager.beginTransaction().replace(R.id.content_frame,
+                        new AddFoodFragment()).commit();
             }
         });
 
