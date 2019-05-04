@@ -7,7 +7,7 @@
     android:orientation="vertical">
     
     <TextView
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="30dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="15pt"
@@ -18,41 +18,40 @@
         android:layout_height="wrap_content"
         android:id="@+id/tv_time" />
 
-    <LinearLayout
+    <TextView
+        android:layout_marginTop="10pt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/today_s_calorie_goal_is"/>
-
-        <EditText
-            android:layout_width="30pt"
-            android:layout_height="wrap_content"
-            android:inputType="number"
-            android:id="@+id/et_goal"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/kj"/>
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/btn_set"
-            android:text="@string/set"/>
-    </LinearLayout>
+        android:text="  Today's calorie goal is :"/>
 
     <TextView
+        android:textSize="15pt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:id="@+id/tv_goal"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="  Change daily calorie goal to (KJ): "/>
+
+    <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/tv_goal"/>
+        android:inputType="number"
+        android:hint="  Daily Calorie Goal"
+        android:id="@+id/et_goal"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:id="@+id/btn_set"
+        android:text="@string/set"/>
     
     <ImageView
-        android:layout_marginTop="10pt"
+
         android:layout_width="match_parent"
         android:layout_height="253dp"
         android:src="@drawable/home_diet"

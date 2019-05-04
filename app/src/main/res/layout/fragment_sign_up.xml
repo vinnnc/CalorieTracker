@@ -44,27 +44,24 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="  Full Name:" />
+        android:text="  First Name:" />
 
-    <LinearLayout
+    <EditText
+        android:id="@+id/etFirstName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:hint="  First Name" />
 
-        <EditText
-            android:id="@+id/etFirstName"
-            android:layout_weight=".5"
-            android:layout_width="0dip"
-            android:layout_height="wrap_content"
-            android:hint="  First" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="  Last Name:" />
 
-        <EditText
-            android:id="@+id/etSurname"
-            android:layout_weight=".5"
-            android:layout_width="0dip"
-            android:layout_height="wrap_content"
-            android:hint="  Last" />
-    </LinearLayout>
+    <EditText
+        android:id="@+id/etSurname"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="  Last Name" />
 
     <TextView
         android:layout_width="wrap_content"

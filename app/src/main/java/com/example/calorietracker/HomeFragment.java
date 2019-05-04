@@ -2,6 +2,8 @@ package com.example.calorietracker;
 
 import android.annotation.SuppressLint;
 import android.app.Fragment;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,11 +28,35 @@ public class HomeFragment extends Fragment {
         assert bundle != null;
         String firstName = bundle.getString("firstName");
         tvWelcome.setText("Hi, " + firstName);
+
         @SuppressLint("SimpleDateFormat")
-        SimpleDateFormat sdfTime = new SimpleDateFormat("yyyy/MM/dd HH:mm");
+        final SimpleDateFormat sdfTime = new SimpleDateFormat("yyyy/MM/dd HH:mm");
         String currentTime = sdfTime.format(Calendar.getInstance().getTime());
         TextView tvTime = vHome.findViewById(R.id.tv_time);
         tvTime.setText(currentTime);
+
+        TextView tvGoal = vHome.findViewById(R.id.tv_goal);
+        SharedPreferences sharedPref = getActivity().getSharedPreferences("dailyCalorieGoal",
+                Context.MODE_PRIVATE);
+
+        @SuppressLint("SimpleDateFormat")
+        final SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy/MM/dd");
+        String currentDate = sdfDate.format(Calendar.getInstance().getTime());
+
+        @SuppressLint("CommitPrefEdits")
+        SharedPreferences.Editor spEditor = sharedPref.edit();
+        String date = sharedPref.getString("date", "");
+        if ((date).equals(currentDate)) {
+            int goal = sharedPref.getInt("goal", 0);
+            tvGoal.setText(goal + " KJ");
+        }
+        else {
+            spEditor.putString("date", currentDate);
+            spEditor.putInt("goal", 0);
+            spEditor.apply();
+            tvGoal.setText(0 + " KJ");
+        }
+
         Button btnConfirm = vHome.findViewById(R.id.btn_set);
         btnConfirm.setOnClickListener(new View.OnClickListener() {
 
@@ -38,10 +64,17 @@ public class HomeFragment extends Fragment {
             public void onClick(View v) {
                 EditText etGoal = vHome.findViewById(R.id.et_goal);
                 int goal = Integer.valueOf(etGoal.getText().toString());
+                SharedPreferences sharedPref = getActivity()
+                        .getSharedPreferences("dailyCalorieGoal", Context.MODE_PRIVATE);
+                SharedPreferences.Editor spEditor = sharedPref.edit();
+                spEditor.putString("date", sdfDate.format(Calendar.getInstance().getTime()));
+                spEditor.putInt("goal", goal);
+                spEditor.apply();
                 TextView tvGoal = vHome.findViewById(R.id.tv_goal);
-                tvGoal.setText("Daily calorie goal has been set to " + goal + "KJ");
+                tvGoal.setText(goal + " KJ");
             }
         });
+
         return vHome;
     }
 }
