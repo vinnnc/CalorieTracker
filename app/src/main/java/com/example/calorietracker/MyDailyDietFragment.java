@@ -12,6 +12,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.example.calorietracker.Database.Food;
 import com.example.calorietracker.Database.RestClient;
@@ -102,6 +103,19 @@ public class MyDailyDietFragment extends Fragment {
             }
         });
 
+        spFood.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String keyword = parent.getItemAtPosition(position).toString();
+                SearchAsyncTask searchAsyncTask= new SearchAsyncTask();
+                searchAsyncTask.execute(keyword);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+
         return vMyDailyFragment;
     }
 
@@ -130,6 +144,21 @@ public class MyDailyDietFragment extends Fragment {
                 e.printStackTrace();
             }
             return foods;
+        }
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    private class SearchAsyncTask extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected String doInBackground(String... params) {
+            return API.search(params[0], new String[]{"num"}, new String[]{"1"});
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            TextView tvDescription = vMyDailyFragment.findViewById(R.id.tv_description);
+            tvDescription.setText(API.getSnippet(result));
         }
     }
 }

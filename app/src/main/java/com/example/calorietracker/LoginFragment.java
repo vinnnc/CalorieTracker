@@ -35,6 +35,10 @@ public class LoginFragment extends Fragment {
                 EditText etPassword = vLogin.findViewById(R.id.etPassword);
                 String username = etUsername.getText().toString();
                 String password = etPassword.getText().toString();
+                if (username.isEmpty())
+                    etUsername.setError("Username cannot be empty.");
+                if (password.isEmpty())
+                    etPassword.setError("Password cannot be empty.");
                 if (!username.isEmpty() && !password.isEmpty())
                     loginAsyncTask.execute(username, password);
             }

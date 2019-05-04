@@ -103,23 +103,23 @@ public class SignUpFragment extends Fragment {
                  String activityLv = spActivityLv.getSelectedItem().toString().substring(0,1);
                  String stepPerMile = etStepPerMile.getText().toString();
                  if (username.isEmpty())
-                     etUsername.setError("Username cannot be null");
+                     etUsername.setError("Username cannot be empty");
                  if (password.isEmpty())
-                     etPassword.setError("Password cannot be null");
+                     etPassword.setError("Password cannot be empty");
                  if (firstName.isEmpty())
-                     etFirstName.setError("Full name cannot be null");
+                     etFirstName.setError("Full name cannot be empty");
                  if (surname.isEmpty())
-                     etSurname.setError("Surname cannot be null");
+                     etSurname.setError("Surname cannot be empty");
                  if (email.isEmpty())
-                     etEmail.setError("Email cannot be null");
+                     etEmail.setError("Email cannot be empty");
                  if (height.isEmpty())
-                     etHeight.setError("Height cannot be null");
+                     etHeight.setError("Height cannot be empty");
                  if (weight.isEmpty())
-                     etWeight.setError("Weight cannot be null");
+                     etWeight.setError("Weight cannot be empty");
                  if (address.isEmpty())
-                     etAddress.setError("Address cannot be null");
+                     etAddress.setError("Address cannot be empty");
                  if (stepPerMile.isEmpty())
-                     etStepPerMile.setError("Step per mile cannot be null");
+                     etStepPerMile.setError("Step per mile cannot be empty");
                  if (!(username.isEmpty() || password.isEmpty() || firstName.isEmpty()
                          || surname.isEmpty() || email.isEmpty() || height.isEmpty()
                          || weight.isEmpty() || gender.isEmpty() || address.isEmpty()

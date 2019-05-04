@@ -26,7 +26,8 @@ public class HomeFragment extends Fragment {
         TextView tvWelcome = vHome.findViewById(R.id.tv_welcome);
         final Bundle bundle = getActivity().getIntent(). getExtras();
         assert bundle != null;
-        String firstName = bundle.getString("firstName");
+        final String firstName = bundle.getString("firstName");
+        final int userId = bundle.getInt("userId");
         tvWelcome.setText("Hi, " + firstName);
 
         @SuppressLint("SimpleDateFormat")
@@ -36,8 +37,8 @@ public class HomeFragment extends Fragment {
         tvTime.setText(currentTime);
 
         TextView tvGoal = vHome.findViewById(R.id.tv_goal);
-        SharedPreferences sharedPref = getActivity().getSharedPreferences("dailyCalorieGoal",
-                Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = getActivity()
+                .getSharedPreferences(userId + " " + firstName, Context.MODE_PRIVATE);
 
         @SuppressLint("SimpleDateFormat")
         final SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy/MM/dd");
@@ -63,9 +64,14 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 EditText etGoal = vHome.findViewById(R.id.et_goal);
+                if (etGoal.getText().toString().isEmpty()) {
+                    etGoal.setError("Daily calorie goal cannot be empty.");
+                    return;
+                }
+
                 int goal = Integer.valueOf(etGoal.getText().toString());
                 SharedPreferences sharedPref = getActivity()
-                        .getSharedPreferences("dailyCalorieGoal", Context.MODE_PRIVATE);
+                        .getSharedPreferences(userId + " " + firstName, Context.MODE_PRIVATE);
                 SharedPreferences.Editor spEditor = sharedPref.edit();
                 spEditor.putString("date", sdfDate.format(Calendar.getInstance().getTime()));
                 spEditor.putInt("goal", goal);
