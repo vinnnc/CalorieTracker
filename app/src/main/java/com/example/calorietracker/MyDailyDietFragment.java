@@ -53,7 +53,7 @@ public class MyDailyDietFragment extends Fragment {
         spCategory.setSelection(0);
 
         final Spinner spFood = vMyDailyFragment.findViewById(R.id.sp_food);
-        final List<String> foodList = new ArrayList<>();
+        List<String> foodList = new ArrayList<>();
         for (Food food : foods) {
             if (food.getCategory().equals(categoryList.get(0)))
                 foodList.add(food.getName());
@@ -72,13 +72,18 @@ public class MyDailyDietFragment extends Fragment {
             public void onItemSelected(AdapterView<?> parent, View view, int position,
                                        long id) {
                 String selectedCategory = parent.getItemAtPosition(position).toString();
+                List<String> newFoodList = new ArrayList<>();
                 if (selectedCategory != null) {
-                    foodList.clear();
+                    newFoodList.clear();
                     for (Food food : finalFoods) {
                         if (food.getCategory().equals(selectedCategory))
-                            foodList.add(food.getName());
+                            newFoodList.add(food.getName());
                     }
                 }
+                ArrayAdapter<String> foodAdapter = new ArrayAdapter<>(getActivity(),
+                        android.R.layout.simple_spinner_item, newFoodList);
+                foodAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                spFood.setAdapter(foodAdapter);
                 spFood.setSelection(0);
             }
 

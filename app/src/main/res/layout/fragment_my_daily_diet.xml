@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -10,21 +8,45 @@
         android:layout_marginTop="20pt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Add the food you consumed"
+        android:text="My Daily Diet"
         android:textSize="12pt"
-        android:layout_gravity="center_horizontal"/>
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="20pt"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="  Category: "/>
 
     <Spinner
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/sp_category">
+        android:id="@+id/sp_category"
+        android:layout_marginBottom="10pt">
     </Spinner>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="  Food: "/>
 
     <Spinner
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/sp_food">
+        android:id="@+id/sp_food"
+        android:layout_marginBottom="10pt">
     </Spinner>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:id="@+id/iv_food"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_description" />
 
     <TextView
         android:layout_marginTop="10pt"
@@ -37,13 +59,27 @@
         android:layout_height="wrap_content"
         android:hint="  Quantity"
         android:inputType="number"
-        />
+        android:id="@+id/et_quantity" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:text="Add"/>
+        android:text="Confirm"
+        android:id="@+id/btn_confirm"
+        android:layout_marginBottom="10pt"/>
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Cannot find food you want? Let's add it!"
+        android:layout_gravity="center_horizontal"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:id="@+id/btn_add_new_food"
+        android:text="Add New Food"/>
 
 </LinearLayout>
