@@ -69,6 +69,16 @@ public class API {
             snippet = snippet.split(": ")[1];
         if (snippet.contains("\n"))
             snippet = snippet.replaceAll("\n", "");
+        if (snippet.contains("...")) {
+            String[] strings = snippet.split("\\.\\.\\.");
+            for (String string : strings) {
+                if (string.startsWith(food) || string.startsWith(" " + food)) {
+                    snippet = string;
+                    break;
+                }
+            }
+            snippet = snippet.split("\\.")[0] + ".";
+        }
         return snippet;
     }
 }
