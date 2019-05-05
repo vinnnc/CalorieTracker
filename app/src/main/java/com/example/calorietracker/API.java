@@ -10,9 +10,11 @@ import java.util.Scanner;
 public class API {
     private static final String GOOGLE_API_KEY = "AIzaSyCUapVuGj91DsfsdeJ3cDpnXtZ39QhyQJk";
 
-    private static final String SEARCH_ID_CX = "008965496564990309248:trcyljwlnhu";
+    private static final String NON_PLANT_SEARCH_ID_CX = "008965496564990309248:trcyljwlnhu";
 
-    public static String search(String keyword, String[] params, String[] values) {
+    private static final String PLANT_SEARCH_ID_CX = "008965496564990309248:qupehtvwic8";
+
+    public static String search(String keyword, String[] params, String[] values, Boolean isPlant) {
         keyword = keyword.replace(" ", "+");
         URL url;
         HttpURLConnection connection = null;
@@ -24,10 +26,17 @@ public class API {
                 query_parameter.append(params[i]);
                 query_parameter.append("=");
                 query_parameter.append(values[i]);
-            } }
+            }
+        }
         try {
-            url = new URL("https://www.googleapis.com/customsearch/v1?key="+
-                    GOOGLE_API_KEY+ "&cx="+ SEARCH_ID_CX + "&q="+ keyword + query_parameter);
+            if (isPlant)
+                url = new URL("https://www.googleapis.com/customsearch/v1?key="
+                        + GOOGLE_API_KEY + "&cx=" + PLANT_SEARCH_ID_CX + "&q=" + keyword
+                        + query_parameter);
+            else
+                url = new URL("https://www.googleapis.com/customsearch/v1?key="
+                        + GOOGLE_API_KEY + "&cx=" + NON_PLANT_SEARCH_ID_CX + "&q=" + keyword
+                        + query_parameter);
             connection = (HttpURLConnection)url.openConnection();
             connection.setReadTimeout(10000);
             connection.setConnectTimeout(15000);
@@ -45,7 +54,7 @@ public class API {
         return textResult.toString();
     }
 
-    public static String getSnippet(String result){
+    public static String getSnippet(String result, String food){
         String snippet = null;
         try{
             JSONObject jsonObject = new JSONObject(result);
@@ -56,6 +65,10 @@ public class API {
             e.printStackTrace();
             snippet = "NO INFO FOUND";
         }
+        if (snippet.contains(": "))
+            snippet = snippet.split(": ")[1];
+        if (snippet.contains("\n"))
+            snippet = snippet.replaceAll("\n", "");
         return snippet;
     }
 }

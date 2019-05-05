@@ -38,7 +38,8 @@ public class HomeFragment extends Fragment {
 
         TextView tvGoal = vHome.findViewById(R.id.tv_goal);
         SharedPreferences sharedPref = getActivity()
-                .getSharedPreferences(userId + " " + firstName, Context.MODE_PRIVATE);
+                .getSharedPreferences("dailyGoal_" + userId + "_" + firstName,
+                        Context.MODE_PRIVATE);
 
         @SuppressLint("SimpleDateFormat")
         final SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy/MM/dd");
@@ -71,7 +72,8 @@ public class HomeFragment extends Fragment {
 
                 int goal = Integer.valueOf(etGoal.getText().toString());
                 SharedPreferences sharedPref = getActivity()
-                        .getSharedPreferences(userId + " " + firstName, Context.MODE_PRIVATE);
+                        .getSharedPreferences("dailyGoal_" + userId + "_" + firstName,
+                                Context.MODE_PRIVATE);
                 SharedPreferences.Editor spEditor = sharedPref.edit();
                 spEditor.putString("date", sdfDate.format(Calendar.getInstance().getTime()));
                 spEditor.putInt("goal", goal);
