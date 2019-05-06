@@ -298,4 +298,39 @@ public class RestClient {
         }
         return Integer.valueOf(testResult.toString());
     }
+
+    public static String findTotalConsumedAndBurned(int userId, String date)
+    {
+        final String methodPath = "restws.report/createReportA/" + userId + "/" + date;
+        //initialise
+        URL url;
+        HttpURLConnection conn = null;
+        StringBuilder textResult = new StringBuilder();
+        //Making HTTP request
+        try {
+            url = new URL(BASE_URL + methodPath);
+            //open the connection
+            conn = (HttpURLConnection) url.openConnection();
+            //set the timeout
+            conn.setReadTimeout(10000);
+            conn.setConnectTimeout(15000);
+            //set the connection method to GET
+            conn.setRequestMethod("GET");
+            //add http headers to set your response type to json
+            conn.setRequestProperty("Content-Type", "application/json");
+            conn.setRequestProperty("Accept", "application/json");
+            //Read the response
+            Scanner inStream = new Scanner(conn.getInputStream());
+            //read the input stream and store it as string
+            while (inStream.hasNextLine()) {
+                textResult.append(inStream.nextLine());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            assert conn != null;
+            conn.disconnect();
+        }
+        return textResult.toString();
+    }
 }
