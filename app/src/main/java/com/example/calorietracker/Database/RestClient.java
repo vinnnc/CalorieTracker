@@ -14,9 +14,9 @@ public class RestClient {
     private final static String BASE_URL =
             "http://10.0.2.2:8080/CalorieTrackerWS/webresources/";
 
-    public static String findCredentialByUsernameAndPasswordhash(String username, String password)
+    public static String findCredentialByUsernameAndPasswordHash(String username, String password)
     {
-        final String methodPath = "restws.credential/findByUsernameAndPasswordhash/" + username +
+        final String methodPath = "restws.credential/findByUsernameAndPasswordHash/" + username +
                 "/" + password;
         //initialise
         URL url;

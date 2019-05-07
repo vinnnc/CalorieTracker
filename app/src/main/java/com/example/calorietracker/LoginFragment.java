@@ -62,7 +62,7 @@ public class LoginFragment extends Fragment {
 
         @Override
         protected String doInBackground(String... params) {
-            String result = RestClient.findCredentialByUsernameAndPasswordhash(params[0],
+            String result = RestClient.findCredentialByUsernameAndPasswordHash(params[0],
                     params[1]);
             if (result.equals("[]"))
                 return "Username or password is incorrect, please try again!";

@@ -11,7 +11,7 @@
         android:text="My Daily Diet"
         android:textSize="12pt"
         android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="20pt"/>
+        android:layout_marginBottom="10pt"/>
 
     <TextView
         android:layout_width="match_parent"
