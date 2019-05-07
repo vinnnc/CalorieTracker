@@ -1,7 +1,7 @@
 package com.example.calorietracker;
 
-import android.app.Fragment;
-import android.app.FragmentManager;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -36,7 +36,7 @@ public class SecondActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
         Objects.requireNonNull(getSupportActionBar()).setTitle("Calorie Tracker");
 
-        FragmentManager fragmentManager = getFragmentManager();
+        FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.content_frame, new HomeFragment()).commit();
     }
 
@@ -71,7 +71,7 @@ public class SecondActivity extends AppCompatActivity
                 Intent intent = new Intent(SecondActivity.this, MainActivity.class);
                 startActivity(intent); break;
         }
-        FragmentManager fragmentManager = getFragmentManager();
+        FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.content_frame, nextFragment).commit();
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

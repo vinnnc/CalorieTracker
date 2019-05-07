@@ -1,13 +1,11 @@
 package com.example.calorietracker.Database;
 
-import java.util.Date;
-
 public class Users {
     private Integer userId;
     private String firstName;
     private String surname;
     private String email;
-    private Date dob;
+    private String dob;
     private Integer height;
     private Integer weight;
     private String gender;
@@ -16,7 +14,7 @@ public class Users {
     private Integer activityLv;
     private Integer stepPerMile;
 
-    public Users(Integer userId, String firstName, String surname, String email, Date dob,
+    public Users(Integer userId, String firstName, String surname, String email, String dob,
                  Integer height, Integer weight, String gender, String address, Integer postcode,
                  Integer activityLv, Integer stepPerMile) {
         this.userId = userId;
@@ -65,11 +63,11 @@ public class Users {
         this.email = email;
     }
 
-    public Date getDob() {
+    public String getDob() {
         return dob;
     }
 
-    public void setDob(Date dob) {
+    public void setDob(String dob) {
         this.dob = dob;
     }
 

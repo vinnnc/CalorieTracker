@@ -89,7 +89,7 @@ public class RestClient {
         //initialise
         URL url;
         HttpURLConnection conn = null;
-        final String methodPath = "/restws.users/";
+        final String methodPath = "restws.users/";
         try {
             Gson gson = new Gson();
             String stringUsersJson = gson.toJson(users);
@@ -124,7 +124,7 @@ public class RestClient {
         //initialise
         URL url;
         HttpURLConnection conn = null;
-        final String methodPath = "/restws.credential/";
+        final String methodPath = "restws.credential/";
         try {
             Gson gson = new Gson();
             String stringCredentialJson = gson.toJson(credential);
@@ -302,6 +302,41 @@ public class RestClient {
     public static String findTotalConsumedAndBurned(int userId, String date)
     {
         final String methodPath = "restws.report/createReportA/" + userId + "/" + date;
+        //initialise
+        URL url;
+        HttpURLConnection conn = null;
+        StringBuilder textResult = new StringBuilder();
+        //Making HTTP request
+        try {
+            url = new URL(BASE_URL + methodPath);
+            //open the connection
+            conn = (HttpURLConnection) url.openConnection();
+            //set the timeout
+            conn.setReadTimeout(10000);
+            conn.setConnectTimeout(15000);
+            //set the connection method to GET
+            conn.setRequestMethod("GET");
+            //add http headers to set your response type to json
+            conn.setRequestProperty("Content-Type", "application/json");
+            conn.setRequestProperty("Accept", "application/json");
+            //Read the response
+            Scanner inStream = new Scanner(conn.getInputStream());
+            //read the input stream and store it as string
+            while (inStream.hasNextLine()) {
+                textResult.append(inStream.nextLine());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            assert conn != null;
+            conn.disconnect();
+        }
+        return textResult.toString();
+    }
+
+    public static String findUserByEmail(String email)
+    {
+        final String methodPath = "restws.users/findByEmail/" + email;
         //initialise
         URL url;
         HttpURLConnection conn = null;

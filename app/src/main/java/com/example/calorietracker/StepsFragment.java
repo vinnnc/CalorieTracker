@@ -1,7 +1,8 @@
 package com.example.calorietracker;
 
 import android.annotation.SuppressLint;
-import android.app.Fragment;
+import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
 import android.arch.persistence.room.Room;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -25,9 +26,10 @@ public class StepsFragment extends Fragment {
     View vSteps;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         vSteps = inflater.inflate(R.layout.fragment_steps, container, false);
+
         final Bundle bundle = getActivity().getIntent(). getExtras();
         assert bundle != null;
         final String firstName = bundle.getString("firstName");
@@ -86,12 +88,26 @@ public class StepsFragment extends Fragment {
         @Override
         protected String doInBackground(Void... params) {
             List<Step> steps = db.stepDao().getAll();
+            @SuppressLint("SimpleDateFormat")
+            SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy/MM/dd");
+
+            @SuppressLint("SimpleDateFormat")
+            SimpleDateFormat sdfTime = new SimpleDateFormat("HH:mm:ss");
             if (!(steps.isEmpty() || steps == null)) {
                 StringBuilder allSteps = new StringBuilder();
+                String currentDate = sdfDate.format(Calendar.getInstance().getTime());
                 for (Step step : steps) {
-                    String stepStr = "    ID: " + step.getSid() + "    Time: " + step.getTime()
-                            + "    Step: " + step.getStep() + ";\n";
-                    allSteps.append(stepStr);
+                    try {
+                        String dateStr = sdfDate.parse(step.getTime()).toString();
+                        if (currentDate.equals(dateStr)) {
+                            String time = sdfTime.parse(step.getTime()).toString();
+                            String stepStr = "    ID: " + step.getSid() + "    Time: " + time
+                                    + "    Step: " + step.getStep() + ";\n";
+                            allSteps.append(stepStr);
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
                 return allSteps.toString();
             }

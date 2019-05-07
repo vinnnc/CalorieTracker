@@ -140,23 +140,24 @@ public class SignUpFragment extends Fragment {
     private class SignUpAsyncTask extends AsyncTask<String, Void, String> {
         @Override
         protected String doInBackground(String... params) {
-            String findUsername = RestClient.findCredentialByUsername(params[0]);
-            String findCredential = RestClient.findCredentialByUsernameAndPasswordhash(params[0],
-                    params[1]);
-            if (!findUsername.equals("")){
-                EditText etUsername = vSignUp.findViewById(R.id.etUsername);
-                etUsername.setError("Username is already exist");
-                return "Sign Up failed";
-            }
-            if (!findCredential.equals("[]")){
-                return "Credential exists, please go back to login";
-            }
+//            String findUsername = RestClient.findCredentialByUsername(params[0]);
+//            String findEmail = RestClient.findUserByEmail(params[4]);
+//            if (!findUsername.equals("")) {
+//                EditText etUsername = vSignUp.findViewById(R.id.etUsername);
+//                etUsername.setError("Username is already exist, please try another one.");
+//                return "Sign up failed.";
+//            }
+//            if (!findEmail.equals("")) {
+//                EditText etEmail = vSignUp.findViewById(R.id.etEmail);
+//                etEmail.setError("Email is already exist, please try another one.");
+//                return "Sign up failed.";
+//            }
             int userId = RestClient.countUsers() + 1;
             try {
                 @SuppressLint("SimpleDateFormat")
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
                 Users users = new Users(userId, params[2], params[3], params[4],
-                        sdf.parse(params[5]), Integer.valueOf(params[6]),
+                        sdf.format(sdf.parse(params[5])), Integer.valueOf(params[6]),
                         Integer.valueOf(params[7]), params[8], params[9],
                         Integer.valueOf(params[10]), Integer.valueOf(params[11]),
                         Integer.valueOf(params[12]));

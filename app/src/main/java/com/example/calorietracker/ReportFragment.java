@@ -1,12 +1,11 @@
 package com.example.calorietracker;
 
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
+
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.XAxis;
@@ -15,7 +14,9 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
-import java.util.ArrayList; import java.util.List;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ReportFragment extends Fragment {
     View vReport;

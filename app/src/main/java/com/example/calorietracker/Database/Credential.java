@@ -1,19 +1,23 @@
 package com.example.calorietracker.Database;
 
+import android.annotation.SuppressLint;
+
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 
 public class Credential {
     private String username;
     private Integer userId;
     private String passwordHash;
-    private Date signUpDate;
+    private String signUpDate;
 
     public Credential(String username, Integer userId, String passwordHash) {
         this.username = username;
         this.userId = userId;
         this.passwordHash = passwordHash;
-        this.signUpDate = Calendar.getInstance().getTime();
+        @SuppressLint("SimpleDateFormat")
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        this.signUpDate = sdf.format(Calendar.getInstance().getTime());
     }
 
     public String getUsername() {
@@ -40,11 +44,11 @@ public class Credential {
         this.passwordHash = passwordHash;
     }
 
-    public Date getSignUpDate() {
+    public String getSignUpDate() {
         return signUpDate;
     }
 
-    public void setSignUpDate(Date signUpDate) {
+    public void setSignUpDate(String signUpDate) {
         this.signUpDate = signUpDate;
     }
 }

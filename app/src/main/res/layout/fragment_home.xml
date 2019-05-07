@@ -51,7 +51,6 @@
         android:text="@string/set"/>
     
     <ImageView
-
         android:layout_width="match_parent"
         android:layout_height="253dp"
         android:src="@drawable/home_diet"
