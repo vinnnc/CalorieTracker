@@ -25,6 +25,7 @@ import com.example.calorietracker.Database.Users;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 public class SignUpFragment extends Fragment {
      View vSignUp;
@@ -140,18 +141,16 @@ public class SignUpFragment extends Fragment {
     private class SignUpAsyncTask extends AsyncTask<String, Void, String> {
         @Override
         protected String doInBackground(String... params) {
-//            String findUsername = RestClient.findCredentialByUsername(params[0]);
-//            String findEmail = RestClient.findUserByEmail(params[4]);
-//            if (!findUsername.equals("")) {
-//                EditText etUsername = vSignUp.findViewById(R.id.etUsername);
-//                etUsername.setError("Username is already exist, please try another one.");
-//                return "Sign up failed.";
-//            }
-//            if (!findEmail.equals("")) {
-//                EditText etEmail = vSignUp.findViewById(R.id.etEmail);
-//                etEmail.setError("Email is already exist, please try another one.");
-//                return "Sign up failed.";
-//            }
+            CheckAvailableAsyncTask checkAvailableAsyncTask = new CheckAvailableAsyncTask();
+            try {
+                String checkResult = checkAvailableAsyncTask.execute(params[0], params[4]).get();
+                if (!checkResult.isEmpty())
+                    return "Sign up failed";
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             int userId = RestClient.countUsers() + 1;
             try {
                 @SuppressLint("SimpleDateFormat")
@@ -180,6 +179,30 @@ public class SignUpFragment extends Fragment {
         protected void onPostExecute(String response) {
             TextView tvSignUpFeedback = vSignUp.findViewById(R.id.tvSignUpFeedback);
             tvSignUpFeedback.setText(response);
+        }
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    private class CheckAvailableAsyncTask extends AsyncTask<String, Void, String> {
+        @Override
+        protected String doInBackground(String... params) {
+            String findUsername = RestClient.findCredentialByUsername(params[0]);
+            String findEmail = RestClient.findUserByEmail(params[1]);
+            if (!findUsername.equals(""))
+                return "Username is already exist, please try another one.";
+            if (!findEmail.equals(""))
+                return "Email is already exist, please try another one.";
+            return "";
+        }
+
+        @Override
+        protected void onPostExecute(String response) {
+            EditText etUsername = vSignUp.findViewById(R.id.etUsername);
+            EditText etEmail = vSignUp.findViewById(R.id.etEmail);
+            if (response.equals("Username is already exist, please try another one."))
+                etUsername.setError(response);
+            if (response.equals("Email is already exist, please try another one."))
+                etEmail.setError(response);
         }
     }
 }
