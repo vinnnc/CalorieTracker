@@ -69,12 +69,14 @@ public class LoginFragment extends Fragment {
             else {
                 int userId = -1;
                 String firstName = "";
+                String address = "";
                 try {
                     JSONArray jsonArray = new JSONArray(result);
                     JSONObject jsonCredentialObject = jsonArray.getJSONObject(0);
                     JSONObject jsonUsersObject = jsonCredentialObject.getJSONObject("userid");
                     userId = jsonUsersObject.getInt("userid");
                     firstName = jsonUsersObject.getString("firstname");
+                    address = jsonUsersObject.getString("address");
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -82,6 +84,7 @@ public class LoginFragment extends Fragment {
                 Bundle bundle = new Bundle();
                 bundle.putInt("userId", userId);
                 bundle.putString("firstName", firstName);
+                bundle.putString("address", address);
                 intent.putExtras(bundle);
                 startActivity(intent);
                 return "";

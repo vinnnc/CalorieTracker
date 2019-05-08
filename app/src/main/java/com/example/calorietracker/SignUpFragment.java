@@ -170,6 +170,7 @@ public class SignUpFragment extends Fragment {
             Bundle bundle= new Bundle();
             bundle.putInt("userId", userId);
             bundle.putString("firstName", params[2]);
+            bundle.putString("address", params[9]);
             intent.putExtras (bundle);
             startActivity(intent);
             return "";

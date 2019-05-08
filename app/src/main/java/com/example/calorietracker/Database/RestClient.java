@@ -8,6 +8,8 @@ import com.google.gson.Gson;
 import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Scanner;
 
 public class RestClient {
@@ -367,5 +369,24 @@ public class RestClient {
             conn.disconnect();
         }
         return textResult.toString();
+    }
+
+    private String encryptsPassword(String password) {
+        try {
+            MessageDigest digest = java.security.MessageDigest.getInstance("MD5");
+            digest.update(password.getBytes());
+            byte[] messageDigest = digest.digest();
+            StringBuilder hexString = new StringBuilder();
+            for (byte aMessageDigest : messageDigest) {
+                String h = Integer.toHexString(0xFF & aMessageDigest);
+                while (h.length() < 2)
+                    h = "0" + h;
+                hexString.append(h);
+                return hexString.toString();
+            }
+        }catch(NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        return "";
     }
 }
