@@ -1,23 +1,19 @@
 package com.example.calorietracker.Database;
 
-import android.annotation.SuppressLint;
-
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 public class Credential {
     private String username;
-    private Integer userId;
-    private String passwordHash;
-    private String signUpDate;
+    private Users userid;
+    private String passwordhash;
+    private Date signupdate;
 
-    public Credential(String username, Integer userId, String passwordHash) {
+    public Credential(String username, Users userid, String passwordhash) {
         this.username = username;
-        this.userId = userId;
-        this.passwordHash = passwordHash;
-        @SuppressLint("SimpleDateFormat")
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        this.signUpDate = sdf.format(Calendar.getInstance().getTime());
+        this.userid = userid;
+        this.passwordhash = passwordhash;
+        this.signupdate = Calendar.getInstance().getTime();
     }
 
     public String getUsername() {
@@ -28,27 +24,27 @@ public class Credential {
         this.username = username;
     }
 
-    public Integer getUserId() {
-        return userId;
+    public Users getUserid() {
+        return userid;
     }
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
+    public void setUserid(Users userid) {
+        this.userid = userid;
     }
 
-    public String getPasswordHash() {
-        return passwordHash;
+    public String getPasswordhash() {
+        return passwordhash;
     }
 
-    public void setPasswordHash(String passwordHash) {
-        this.passwordHash = passwordHash;
+    public void setPasswordhash(String passwordhash) {
+        this.passwordhash = passwordhash;
     }
 
-    public String getSignUpDate() {
-        return signUpDate;
+    public Date getSignupdate() {
+        return signupdate;
     }
 
-    public void setSignUpDate(String signUpDate) {
-        this.signUpDate = signUpDate;
+    public void setSignupdate(Date signupdate) {
+        this.signupdate = signupdate;
     }
 }

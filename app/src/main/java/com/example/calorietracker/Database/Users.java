@@ -1,24 +1,26 @@
 package com.example.calorietracker.Database;
 
+import java.util.Date;
+
 public class Users {
-    private Integer userId;
-    private String firstName;
+    private Integer userid;
+    private String firstname;
     private String surname;
     private String email;
-    private String dob;
+    private Date dob;
     private Integer height;
     private Integer weight;
     private String gender;
     private String address;
     private Integer postcode;
-    private Integer activityLv;
-    private Integer stepPerMile;
+    private Integer activitylv;
+    private Integer steppermile;
 
-    public Users(Integer userId, String firstName, String surname, String email, String dob,
+    public Users(Integer userid, String firstname, String surname, String email, Date dob,
                  Integer height, Integer weight, String gender, String address, Integer postcode,
-                 Integer activityLv, Integer stepPerMile) {
-        this.userId = userId;
-        this.firstName = firstName;
+                 Integer activitylv, Integer steppermile) {
+        this.userid = userid;
+        this.firstname = firstname;
         this.surname = surname;
         this.email = email;
         this.dob = dob;
@@ -27,24 +29,24 @@ public class Users {
         this.gender = gender;
         this.address = address;
         this.postcode = postcode;
-        this.activityLv = activityLv;
-        this.stepPerMile = stepPerMile;
+        this.activitylv = activitylv;
+        this.steppermile = steppermile;
     }
 
-    public Integer getUserId() {
-        return userId;
+    public Integer getUserid() {
+        return userid;
     }
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
+    public void setUserid(Integer userid) {
+        this.userid = userid;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public String getFirstname() {
+        return firstname;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
     }
 
     public String getSurname() {
@@ -63,11 +65,11 @@ public class Users {
         this.email = email;
     }
 
-    public String getDob() {
+    public Date getDob() {
         return dob;
     }
 
-    public void setDob(String dob) {
+    public void setDob(Date dob) {
         this.dob = dob;
     }
 
@@ -111,19 +113,19 @@ public class Users {
         this.postcode = postcode;
     }
 
-    public Integer getActivityLv() {
-        return activityLv;
+    public Integer getActivitylv() {
+        return activitylv;
     }
 
-    public void setActivityLv(Integer activityLv) {
-        this.activityLv = activityLv;
+    public void setActivitylv(Integer activitylv) {
+        this.activitylv = activitylv;
     }
 
-    public Integer getStepPerMile() {
-        return stepPerMile;
+    public Integer getSteppermile() {
+        return steppermile;
     }
 
-    public void setStepPerMile(Integer stepPerMile) {
-        this.stepPerMile = stepPerMile;
+    public void setSteppermile(Integer steppermile) {
+        this.steppermile = steppermile;
     }
 }

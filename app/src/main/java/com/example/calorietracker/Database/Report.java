@@ -1,81 +1,80 @@
 package com.example.calorietracker.Database;
 
-import java.util.Calendar;
 import java.util.Date;
 
 public class Report {
-    private Integer repId;
-    private Integer userId;
-    private Date repDate;
-    private Integer totalCalConsumed;
-    private Integer totalCalBurned;
-    private Integer totalSteps;
-    private Integer calGoal;
+    private Integer repid;
+    private Users userid;
+    private Date repdate;
+    private Integer totalcalconsumed;
+    private Integer totalcalburned;
+    private Integer totalsteps;
+    private Integer calgoal;
 
-    public Report(Integer repId, Integer userId, Integer totalCalConsumed, Integer totalCalBurned,
-                  Integer totalSteps, Integer calGoal) {
-        this.repId = repId;
-        this.userId = userId;
-        this.repDate = Calendar.getInstance().getTime();
-        this.totalCalConsumed = totalCalConsumed;
-        this.totalCalBurned = totalCalBurned;
-        this.totalSteps = totalSteps;
-        this.calGoal = calGoal;
+    public Report(Integer repid, Users userid, Date repdate, Integer totalcalconsumed,
+                  Integer totalcalburned, Integer totalsteps, Integer calgoal) {
+        this.repid = repid;
+        this.userid = userid;
+        this.repdate = repdate;
+        this.totalcalconsumed = totalcalconsumed;
+        this.totalcalburned = totalcalburned;
+        this.totalsteps = totalsteps;
+        this.calgoal = calgoal;
     }
 
-    public Integer getRepId() {
-        return repId;
+    public Integer getRepid() {
+        return repid;
     }
 
-    public void setRepId(Integer repId) {
-        this.repId = repId;
+    public void setRepid(Integer repid) {
+        this.repid = repid;
     }
 
-    public Integer getUserId() {
-        return userId;
+    public Users getUserid() {
+        return userid;
     }
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
+    public void setUserid(Users userid) {
+        this.userid = userid;
     }
 
-    public Date getRepDate() {
-        return repDate;
+    public Date getRepdate() {
+        return repdate;
     }
 
-    public void setRepDate(Date repDate) {
-        this.repDate = repDate;
+    public void setRepdate(Date repdate) {
+        this.repdate = repdate;
     }
 
-    public Integer getTotalCalConsumed() {
-        return totalCalConsumed;
+    public Integer getTotalcalconsumed() {
+        return totalcalconsumed;
     }
 
-    public void setTotalCalConsumed(Integer totalCalConsumed) {
-        this.totalCalConsumed = totalCalConsumed;
+    public void setTotalcalconsumed(Integer totalcalconsumed) {
+        this.totalcalconsumed = totalcalconsumed;
     }
 
-    public Integer getTotalCalBurned() {
-        return totalCalBurned;
+    public Integer getTotalcalburned() {
+        return totalcalburned;
     }
 
-    public void setTotalCalBurned(Integer totalCalBurned) {
-        this.totalCalBurned = totalCalBurned;
+    public void setTotalcalburned(Integer totalcalburned) {
+        this.totalcalburned = totalcalburned;
     }
 
-    public Integer getTotalSteps() {
-        return totalSteps;
+    public Integer getTotalsteps() {
+        return totalsteps;
     }
 
-    public void setTotalSteps(Integer totalSteps) {
-        this.totalSteps = totalSteps;
+    public void setTotalsteps(Integer totalsteps) {
+        this.totalsteps = totalsteps;
     }
 
-    public Integer getCalGoal() {
-        return calGoal;
+    public Integer getCalgoal() {
+        return calgoal;
     }
 
-    public void setCalGoal(Integer calGoal) {
-        this.calGoal = calGoal;
+    public void setCalgoal(Integer calgoal) {
+        this.calgoal = calgoal;
     }
 }

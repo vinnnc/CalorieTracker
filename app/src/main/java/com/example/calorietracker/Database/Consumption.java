@@ -1,53 +1,53 @@
 package com.example.calorietracker.Database;
 
-import java.util.Calendar;
 import java.util.Date;
 
 public class Consumption {
-    private Integer conId;
-    private Integer userId;
-    private Date conDate;
-    private Integer foodId;
+    private Integer conid;
+    private Users userid;
+    private Date condate;
+    private Integer foodid;
     private Integer quantity;
 
-    public Consumption(Integer conId, Integer userId, Integer foodId, Integer quantity) {
-        this.conId = conId;
-        this.userId = userId;
-        this.conDate = Calendar.getInstance().getTime();
-        this.foodId = foodId;
+    public Consumption(Integer conid, Users userid, Date condate, Integer foodid,
+                       Integer quantity) {
+        this.conid = conid;
+        this.userid = userid;
+        this.condate = condate;
+        this.foodid = foodid;
         this.quantity = quantity;
     }
 
-    public Integer getConId() {
-        return conId;
+    public Integer getConid() {
+        return conid;
     }
 
-    public void setConId(Integer conId) {
-        this.conId = conId;
+    public void setConid(Integer conid) {
+        this.conid = conid;
     }
 
-    public Integer getUserId() {
-        return userId;
+    public Users getUserid() {
+        return userid;
     }
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
+    public void setUserid(Users userid) {
+        this.userid = userid;
     }
 
-    public Date getConDate() {
-        return conDate;
+    public Date getCondate() {
+        return condate;
     }
 
-    public void setConDate(Date conDate) {
-        this.conDate = conDate;
+    public void setCondate(Date condate) {
+        this.condate = condate;
     }
 
-    public Integer getFoodId() {
-        return foodId;
+    public Integer getFoodid() {
+        return foodid;
     }
 
-    public void setFoodId(Integer foodId) {
-        this.foodId = foodId;
+    public void setFoodid(Integer foodid) {
+        this.foodid = foodid;
     }
 
     public Integer getQuantity() {

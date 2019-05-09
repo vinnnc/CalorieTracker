@@ -4,8 +4,10 @@ package com.example.calorietracker.Database;
 import android.util.Log;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.security.MessageDigest;
@@ -18,8 +20,9 @@ public class RestClient {
 
     public static String findCredentialByUsernameAndPasswordHash(String username, String password)
     {
+        String passwordHash = getHash(password);
         final String methodPath = "restws.credential/findByUsernameAndPasswordHash/" + username +
-                "/" + password;
+                "/" + passwordHash;
         //initialise
         URL url;
         HttpURLConnection conn = null;
@@ -91,9 +94,9 @@ public class RestClient {
         //initialise
         URL url;
         HttpURLConnection conn = null;
-        final String methodPath = "restws.users/";
+        final String methodPath = "restws.users";
         try {
-            Gson gson = new Gson();
+            Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX").create();
             String stringUsersJson = gson.toJson(users);
             url = new URL(BASE_URL + methodPath);
             //open the connection
@@ -126,9 +129,11 @@ public class RestClient {
         //initialise
         URL url;
         HttpURLConnection conn = null;
-        final String methodPath = "restws.credential/";
+        final String methodPath = "restws.credential";
+        String passwordHash = getHash(credential.getPasswordhash());
+        credential.setPasswordhash(passwordHash);
         try {
-            Gson gson = new Gson();
+            Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX").create();
             String stringCredentialJson = gson.toJson(credential);
             url = new URL(BASE_URL + methodPath);
             //open the connection
@@ -198,10 +203,10 @@ public class RestClient {
         //initialise
         URL url;
         HttpURLConnection conn = null;
-        final String methodPath = "/restws.report/";
+        final String methodPath = "restws.report";
         try {
-            Gson gson = new Gson();
-            String stringCredentialJson = gson.toJson(report);
+            Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX").create();
+            String stringReportJson = gson.toJson(report);
             url = new URL(BASE_URL + methodPath);
             //open the connection
             conn = (HttpURLConnection) url.openConnection();
@@ -213,12 +218,12 @@ public class RestClient {
             //set the output to true
             conn.setDoOutput(true);
             //set length of the data you want to send
-            conn.setFixedLengthStreamingMode(stringCredentialJson.getBytes().length);
+            conn.setFixedLengthStreamingMode(stringReportJson.getBytes().length);
             //add HTTP headers
             conn.setRequestProperty("Content-Type", "application/json");
             //Send the POST out
             PrintWriter out = new PrintWriter(conn.getOutputStream());
-            out.print(stringCredentialJson);
+            out.print(stringReportJson);
             out.close();
             Log.i("error", Integer.valueOf(conn.getResponseCode()).toString());
         } catch (Exception e) {
@@ -371,22 +376,36 @@ public class RestClient {
         return textResult.toString();
     }
 
-    private String encryptsPassword(String password) {
+    public static String getHash(String str) {
+        MessageDigest digest = null;
+        byte[] input = null;
+
         try {
-            MessageDigest digest = java.security.MessageDigest.getInstance("MD5");
-            digest.update(password.getBytes());
-            byte[] messageDigest = digest.digest();
-            StringBuilder hexString = new StringBuilder();
-            for (byte aMessageDigest : messageDigest) {
-                String h = Integer.toHexString(0xFF & aMessageDigest);
-                while (h.length() < 2)
-                    h = "0" + h;
-                hexString.append(h);
-                return hexString.toString();
-            }
-        }catch(NoSuchAlgorithmException e) {
+            digest = MessageDigest.getInstance("SHA-1");
+            digest.reset();
+            input = digest.digest(str.getBytes("UTF-8"));
+
+        } catch (NoSuchAlgorithmException e1) {
+            e1.printStackTrace();
+        } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
-        return "";
+        return convertToHex(input);
+    }
+
+    private static String convertToHex(byte[] data) {
+        StringBuffer buf = new StringBuffer();
+        for (int i = 0; i < data.length; i++) {
+            int halfbyte = (data[i] >>> 4) & 0x0F;
+            int two_halfs = 0;
+            do {
+                if ((0 <= halfbyte) && (halfbyte <= 9))
+                    buf.append((char) ('0' + halfbyte));
+                else
+                    buf.append((char) ('a' + (halfbyte - 10)));
+                halfbyte = data[i] & 0x0F;
+            } while(two_halfs++ < 1);
+        }
+        return buf.toString();
     }
 }

@@ -24,8 +24,8 @@ import com.example.calorietracker.Database.Users;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 public class SignUpFragment extends Fragment {
      View vSignUp;
@@ -33,6 +33,10 @@ public class SignUpFragment extends Fragment {
      public View onCreateView(LayoutInflater inflater, ViewGroup container,
                               Bundle savedInstanceState) {
          vSignUp = inflater.inflate(R.layout.fragment_sign_up, container, false);
+
+         DatePicker dpDob = vSignUp.findViewById(R.id.dpDob);
+         dpDob.setMaxDate(Calendar.getInstance().getTimeInMillis());
+
          final Spinner spActivityLv = vSignUp.findViewById(R.id.spActivityLv);
          final List<String> activityLvList = new ArrayList<>();
          activityLvList.add("1 - Extremely inactive");
@@ -141,26 +145,23 @@ public class SignUpFragment extends Fragment {
     private class SignUpAsyncTask extends AsyncTask<String, Void, String> {
         @Override
         protected String doInBackground(String... params) {
-            CheckAvailableAsyncTask checkAvailableAsyncTask = new CheckAvailableAsyncTask();
-            try {
-                String checkResult = checkAvailableAsyncTask.execute(params[0], params[4]).get();
-                if (!checkResult.isEmpty())
-                    return "Sign up failed";
-            } catch (ExecutionException e) {
-                e.printStackTrace();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            String findUsername = RestClient.findCredentialByUsername(params[0]);
+            String findEmail = RestClient.findUserByEmail(params[1]);
+            if (!findUsername.equals(""))
+                return "Username is already exist, please try another one.";
+            if (!findEmail.equals("[]"))
+                return "Email is already exist, please try another one.";
+
             int userId = RestClient.countUsers() + 1;
             try {
                 @SuppressLint("SimpleDateFormat")
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
                 Users users = new Users(userId, params[2], params[3], params[4],
-                        sdf.format(sdf.parse(params[5])), Integer.valueOf(params[6]),
+                        sdf.parse(params[5]), Integer.valueOf(params[6]),
                         Integer.valueOf(params[7]), params[8], params[9],
                         Integer.valueOf(params[10]), Integer.valueOf(params[11]),
                         Integer.valueOf(params[12]));
-                Credential credential = new Credential(params[0], userId, params[1]);
+                Credential credential = new Credential(params[0], users, params[1]);
                 RestClient.createUsers(users);
                 RestClient.createCredential(credential);
             } catch (Exception e) {
@@ -176,34 +177,17 @@ public class SignUpFragment extends Fragment {
             return "";
         }
 
+        @SuppressLint("SetTextI18n")
         @Override
         protected void onPostExecute(String response) {
             TextView tvSignUpFeedback = vSignUp.findViewById(R.id.tvSignUpFeedback);
-            tvSignUpFeedback.setText(response);
-        }
-    }
-
-    @SuppressLint("StaticFieldLeak")
-    private class CheckAvailableAsyncTask extends AsyncTask<String, Void, String> {
-        @Override
-        protected String doInBackground(String... params) {
-            String findUsername = RestClient.findCredentialByUsername(params[0]);
-            String findEmail = RestClient.findUserByEmail(params[1]);
-            if (!findUsername.equals(""))
-                return "Username is already exist, please try another one.";
-            if (!findEmail.equals(""))
-                return "Email is already exist, please try another one.";
-            return "";
-        }
-
-        @Override
-        protected void onPostExecute(String response) {
             EditText etUsername = vSignUp.findViewById(R.id.etUsername);
             EditText etEmail = vSignUp.findViewById(R.id.etEmail);
             if (response.equals("Username is already exist, please try another one."))
                 etUsername.setError(response);
             if (response.equals("Email is already exist, please try another one."))
                 etEmail.setError(response);
+            tvSignUpFeedback.setText(response);
         }
     }
 }
