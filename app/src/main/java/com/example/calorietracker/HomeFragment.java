@@ -1,16 +1,18 @@
 package com.example.calorietracker;
 
 import android.annotation.SuppressLint;
-import android.support.v4.app.Fragment;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import com.example.calorietracker.Database.Users;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -26,9 +28,8 @@ public class HomeFragment extends Fragment {
         TextView tvWelcome = vHome.findViewById(R.id.tv_welcome);
         final Bundle bundle = getActivity().getIntent(). getExtras();
         assert bundle != null;
-        final String firstName = bundle.getString("firstName");
-        final int userId = bundle.getInt("userId");
-        tvWelcome.setText("Hi, " + firstName);
+        final Users users = bundle.getParcelable("users");
+        tvWelcome.setText("Hi, " + users.getFirstname());
 
         @SuppressLint("SimpleDateFormat")
         final SimpleDateFormat sdfTime = new SimpleDateFormat("yyyy/MM/dd HH:mm");
@@ -38,8 +39,8 @@ public class HomeFragment extends Fragment {
 
         TextView tvGoal = vHome.findViewById(R.id.tv_goal);
         SharedPreferences sharedPref = getActivity()
-                .getSharedPreferences("dailyGoal_" + userId + "_" + firstName,
-                        Context.MODE_PRIVATE);
+                .getSharedPreferences("dailyGoal_" + users.getUserid() + "_"
+                                + users.getFirstname(), Context.MODE_PRIVATE);
 
         @SuppressLint("SimpleDateFormat")
         final SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy/MM/dd");
@@ -72,8 +73,8 @@ public class HomeFragment extends Fragment {
 
                 int goal = Integer.valueOf(etGoal.getText().toString());
                 SharedPreferences sharedPref = getActivity()
-                        .getSharedPreferences("dailyGoal_" + userId + "_" + firstName,
-                                Context.MODE_PRIVATE);
+                        .getSharedPreferences("dailyGoal_" + users.getUserid() + "_"
+                                        + users.getFirstname(), Context.MODE_PRIVATE);
                 SharedPreferences.Editor spEditor = sharedPref.edit();
                 spEditor.putString("date", sdfDate.format(Calendar.getInstance().getTime()));
                 spEditor.putInt("goal", goal);

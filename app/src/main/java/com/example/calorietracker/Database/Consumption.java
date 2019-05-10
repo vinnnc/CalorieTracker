@@ -6,11 +6,13 @@ public class Consumption {
     private Integer conid;
     private Users userid;
     private Date condate;
-    private Integer foodid;
+    private Food foodid;
     private Integer quantity;
 
-    public Consumption(Integer conid, Users userid, Date condate, Integer foodid,
-                       Integer quantity) {
+    public Consumption() {
+    }
+
+    public Consumption(Integer conid, Users userid, Date condate, Food foodid, Integer quantity) {
         this.conid = conid;
         this.userid = userid;
         this.condate = condate;
@@ -42,11 +44,11 @@ public class Consumption {
         this.condate = condate;
     }
 
-    public Integer getFoodid() {
+    public Food getFoodid() {
         return foodid;
     }
 
-    public void setFoodid(Integer foodid) {
+    public void setFoodid(Food foodid) {
         this.foodid = foodid;
     }
 

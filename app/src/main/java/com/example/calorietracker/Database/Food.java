@@ -4,14 +4,17 @@ public class Food {
     private Integer foodid;
     private String name;
     private String category;
-    private Integer calorie;
+    private Double calorie;
     private String unit;
-    private Integer amount;
-    private Integer fat;
+    private Double amount;
+    private Double fat;
 
-    public Food(Integer foodId, String name, String category, Integer calorie, String unit,
-                Integer amount, Integer fat) {
-        this.foodid = foodId;
+    public Food() {
+    }
+
+    public Food(Integer foodid, String name, String category, Double calorie, String unit,
+                Double amount, Double fat) {
+        this.foodid = foodid;
         this.name = name;
         this.category = category;
         this.calorie = calorie;
@@ -44,11 +47,11 @@ public class Food {
         this.category = category;
     }
 
-    public Integer getCalorie() {
+    public Double getCalorie() {
         return calorie;
     }
 
-    public void setCalorie(Integer calorie) {
+    public void setCalorie(Double calorie) {
         this.calorie = calorie;
     }
 
@@ -60,19 +63,19 @@ public class Food {
         this.unit = unit;
     }
 
-    public Integer getAmount() {
+    public Double getAmount() {
         return amount;
     }
 
-    public void setAmount(Integer amount) {
+    public void setAmount(Double amount) {
         this.amount = amount;
     }
 
-    public Integer getFat() {
+    public Double getFat() {
         return fat;
     }
 
-    public void setFat(Integer fat) {
+    public void setFat(Double fat) {
         this.fat = fat;
     }
 }

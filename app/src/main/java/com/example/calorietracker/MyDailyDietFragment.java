@@ -1,26 +1,31 @@
 package com.example.calorietracker;
 
 import android.annotation.SuppressLint;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.example.calorietracker.Database.Consumption;
 import com.example.calorietracker.Database.Food;
 import com.example.calorietracker.Database.RestClient;
+import com.example.calorietracker.Database.Users;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -93,16 +98,6 @@ public class MyDailyDietFragment extends Fragment {
             }
         });
 
-        Button btnAddFood = vMyDailyFragment.findViewById(R.id.btn_add_new_food);
-        btnAddFood.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FragmentManager fragmentManager = getFragmentManager();
-                fragmentManager.beginTransaction().replace(R.id.content_frame,
-                        new AddFoodFragment()).commit();
-            }
-        });
-
         spFood.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -123,6 +118,35 @@ public class MyDailyDietFragment extends Fragment {
             }
         });
 
+        Button btnConfirm = vMyDailyFragment.findViewById(R.id.btn_confirm);
+        btnConfirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String category = spCategory.getSelectedItem().toString();
+                String foodname = spFood.getSelectedItem().toString();
+                EditText etQuantity = vMyDailyFragment.findViewById(R.id.et_quantity);
+                if (etQuantity.getText().toString().isEmpty()) {
+                    etQuantity.setError("Quantity cannot be empty");
+                    return;
+                }
+                int Amount = Integer.valueOf(etQuantity.getText().toString());
+                CreateConsumptionAsyncTask createConsumptionAsyncTask =
+                        new CreateConsumptionAsyncTask();
+                createConsumptionAsyncTask.execute();
+
+            }
+        });
+
+        Button btnAddFood = vMyDailyFragment.findViewById(R.id.btn_add_new_food);
+        btnAddFood.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentManager fragmentManager = getFragmentManager();
+                fragmentManager.beginTransaction().replace(R.id.content_frame,
+                        new AddFoodFragment()).commit();
+            }
+        });
+
         return vMyDailyFragment;
     }
 
@@ -140,9 +164,9 @@ public class MyDailyDietFragment extends Fragment {
                     int foodId = jsonObject.getInt("foodid");
                     String name = jsonObject.getString("foodname");
                     String category = jsonObject.getString("category");
-                    int amount = jsonObject.getInt("amount");
-                    int calorie = jsonObject.getInt("calorie");
-                    int fat = jsonObject.getInt("fat");
+                    Double amount = jsonObject.getDouble("amount");
+                    Double calorie = jsonObject.getDouble("calorie");
+                    Double fat = jsonObject.getDouble("fat");
                     String unit = jsonObject.getString("unit");
                     Food food = new Food(foodId, name, category, calorie, unit, amount, fat);
                     foods.add(food);
@@ -167,6 +191,38 @@ public class MyDailyDietFragment extends Fragment {
         protected void onPostExecute(String[] result) {
             TextView tvDescription = vMyDailyFragment.findViewById(R.id.tv_description);
             tvDescription.setText(API.getSnippet(result[0], result[1]));
+        }
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    private class CreateConsumptionAsyncTask extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected String doInBackground(String... params) {
+            int conid = RestClient.count("consumption") + 1;
+            String category = params[0];
+            String foodname = params[1];
+            int quantity = Integer.valueOf(params[2]);
+            final Bundle bundle = getActivity().getIntent(). getExtras();
+            assert bundle != null;
+            Users users = bundle.getParcelable("users");
+            String result = RestClient.findFoodByFoodnameAndCategory(foodname,category);
+            Food food = new Food();
+            try {
+                JSONObject jsonObject = new JSONObject(result);
+                int foodid = jsonObject.getInt("foodid");
+                Double calorie = jsonObject.getDouble("calorie");
+                String unit = jsonObject.getString("unit");
+                Double amount = jsonObject.getDouble("amount");
+                Double fat = jsonObject.getDouble("fat");
+                food = new Food(foodid, foodname, category, calorie, unit, amount, fat);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            Consumption consumption = new Consumption(conid, users,
+                    Calendar.getInstance().getTime(), food, quantity);
+            RestClient.create(consumption);
+            return "Consumption has been created";
         }
     }
 }

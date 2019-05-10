@@ -90,14 +90,14 @@ public class RestClient {
         return textResult.toString();
     }
 
-    public static void createUsers(Users users) {
+    public static void create(Object object) {
         //initialise
         URL url;
         HttpURLConnection conn = null;
-        final String methodPath = "restws.users";
+        final String methodPath = "restws." + object.getClass().toString().toLowerCase();
         try {
             Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX").create();
-            String stringUsersJson = gson.toJson(users);
+            String stringUsersJson = gson.toJson(object);
             url = new URL(BASE_URL + methodPath);
             //open the connection
             conn = (HttpURLConnection) url.openConnection();
@@ -125,45 +125,8 @@ public class RestClient {
         }
     }
 
-    public static void createCredential(Credential credential) {
-        //initialise
-        URL url;
-        HttpURLConnection conn = null;
-        final String methodPath = "restws.credential";
-        String passwordHash = getHash(credential.getPasswordhash());
-        credential.setPasswordhash(passwordHash);
-        try {
-            Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX").create();
-            String stringCredentialJson = gson.toJson(credential);
-            url = new URL(BASE_URL + methodPath);
-            //open the connection
-            conn = (HttpURLConnection) url.openConnection();
-            //set the timeout
-            conn.setReadTimeout(10000);
-            conn.setConnectTimeout(15000);
-            //set the connection method to POST
-            conn.setRequestMethod("POST");
-            //set the output to true
-            conn.setDoOutput(true);
-            //set length of the data you want to send
-            conn.setFixedLengthStreamingMode(stringCredentialJson.getBytes().length);
-            //add HTTP headers
-            conn.setRequestProperty("Content-Type", "application/json");
-            //Send the POST out
-            PrintWriter out = new PrintWriter(conn.getOutputStream());
-            out.print(stringCredentialJson);
-            out.close();
-            Log.i("error", Integer.valueOf(conn.getResponseCode()).toString());
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            assert conn != null;
-            conn.disconnect();
-        }
-    }
-
-    public static int countUsers() {
-        final String methodPath = "restws.users/count";
+    public static int count(String type) {
+        final String methodPath = "restws." + type +"/count";
         //initialise
         URL url;
         HttpURLConnection conn = null;
@@ -197,41 +160,6 @@ public class RestClient {
             conn.disconnect();
         }
         return Integer.valueOf(testResult.toString());
-    }
-
-    public static void createReport(Report report) {
-        //initialise
-        URL url;
-        HttpURLConnection conn = null;
-        final String methodPath = "restws.report";
-        try {
-            Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX").create();
-            String stringReportJson = gson.toJson(report);
-            url = new URL(BASE_URL + methodPath);
-            //open the connection
-            conn = (HttpURLConnection) url.openConnection();
-            //set the timeout
-            conn.setReadTimeout(10000);
-            conn.setConnectTimeout(15000);
-            //set the connection method to POST
-            conn.setRequestMethod("POST");
-            //set the output to true
-            conn.setDoOutput(true);
-            //set length of the data you want to send
-            conn.setFixedLengthStreamingMode(stringReportJson.getBytes().length);
-            //add HTTP headers
-            conn.setRequestProperty("Content-Type", "application/json");
-            //Send the POST out
-            PrintWriter out = new PrintWriter(conn.getOutputStream());
-            out.print(stringReportJson);
-            out.close();
-            Log.i("error", Integer.valueOf(conn.getResponseCode()).toString());
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            assert conn != null;
-            conn.disconnect();
-        }
     }
 
     public static String findAllFood()
@@ -267,43 +195,6 @@ public class RestClient {
             conn.disconnect();
         }
         return textResult.toString();
-    }
-
-    public static int countFood() {
-        final String methodPath = "restws.food/count/";
-        //initialise
-        URL url;
-        HttpURLConnection conn = null;
-        StringBuilder testResult = new StringBuilder();
-
-        //Making HTTP request
-        try {
-            url = new URL(BASE_URL + methodPath);
-            //open the connection
-            conn = (HttpURLConnection) url.openConnection();
-            Log.i("url", url.toString());
-            //set the timeout
-            conn.setReadTimeout(10000);
-            conn.setConnectTimeout(15000);
-            //set the connection method to GET
-            conn.setRequestMethod("GET");
-            //add http headers to set your response type to json
-            conn.setRequestProperty("Content-Type", "application/json");
-            conn.setRequestProperty("Accept", "text/plain");
-            //Read the response
-            Scanner inStream = new Scanner(conn.getInputStream());
-            //read the input stream and store it as string
-            while (inStream.hasNextLine()) {
-                testResult.append(inStream.nextLine());
-                Log.i("results ", testResult.toString());
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            assert conn != null;
-            conn.disconnect();
-        }
-        return Integer.valueOf(testResult.toString());
     }
 
     public static String findTotalConsumedAndBurned(int userId, String date)
@@ -344,6 +235,42 @@ public class RestClient {
     public static String findUserByEmail(String email)
     {
         final String methodPath = "restws.users/findByEmail/" + email;
+        //initialise
+        URL url;
+        HttpURLConnection conn = null;
+        StringBuilder textResult = new StringBuilder();
+        //Making HTTP request
+        try {
+            url = new URL(BASE_URL + methodPath);
+            //open the connection
+            conn = (HttpURLConnection) url.openConnection();
+            //set the timeout
+            conn.setReadTimeout(10000);
+            conn.setConnectTimeout(15000);
+            //set the connection method to GET
+            conn.setRequestMethod("GET");
+            //add http headers to set your response type to json
+            conn.setRequestProperty("Content-Type", "application/json");
+            conn.setRequestProperty("Accept", "application/json");
+            //Read the response
+            Scanner inStream = new Scanner(conn.getInputStream());
+            //read the input stream and store it as string
+            while (inStream.hasNextLine()) {
+                textResult.append(inStream.nextLine());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            assert conn != null;
+            conn.disconnect();
+        }
+        return textResult.toString();
+    }
+
+    public static String findFoodByFoodnameAndCategory(String foodname, String category)
+    {
+        final String methodPath = "restws.users/findFoodByFoodnameAndCategory/"
+                + foodname + "/" + category;
         //initialise
         URL url;
         HttpURLConnection conn = null;

@@ -151,27 +151,24 @@ public class SignUpFragment extends Fragment {
                 return "Username is already exist, please try another one.";
             if (!findEmail.equals("[]"))
                 return "Email is already exist, please try another one.";
-
-            int userId = RestClient.countUsers() + 1;
+            Users users = new Users();
+            int userId = RestClient.count("users") + 1;
             try {
                 @SuppressLint("SimpleDateFormat")
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-                Users users = new Users(userId, params[2], params[3], params[4],
-                        sdf.parse(params[5]), Integer.valueOf(params[6]),
-                        Integer.valueOf(params[7]), params[8], params[9],
-                        Integer.valueOf(params[10]), Integer.valueOf(params[11]),
+                users = new Users(userId, params[2], params[3], params[4], sdf.parse(params[5]),
+                        Integer.valueOf(params[6]), Integer.valueOf(params[7]), params[8],
+                        params[9], Integer.valueOf(params[10]), Integer.valueOf(params[11]),
                         Integer.valueOf(params[12]));
                 Credential credential = new Credential(params[0], users, params[1]);
-                RestClient.createUsers(users);
-                RestClient.createCredential(credential);
+                RestClient.create(users);
+                RestClient.create(credential);
             } catch (Exception e) {
                 e.printStackTrace();
             }
             Intent intent = new Intent(getActivity(), SecondActivity.class);
             Bundle bundle= new Bundle();
-            bundle.putInt("userId", userId);
-            bundle.putString("firstName", params[2]);
-            bundle.putString("address", params[9]);
+            bundle.putParcelable("users", users);
             intent.putExtras (bundle);
             startActivity(intent);
             return "";

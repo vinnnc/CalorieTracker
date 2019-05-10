@@ -68,9 +68,9 @@ public class AddFoodFragment extends Fragment {
                     int foodId = jsonObject.getInt("foodid");
                     String name = jsonObject.getString("foodname");
                     String category = jsonObject.getString("category");
-                    int amount = jsonObject.getInt("amount");
-                    int calorie = jsonObject.getInt("calorie");
-                    int fat = jsonObject.getInt("fat");
+                    double amount = jsonObject.getDouble("amount");
+                    double calorie = jsonObject.getDouble("calorie");
+                    double fat = jsonObject.getDouble("fat");
                     String unit = jsonObject.getString("unit");
                     Food food = new Food(foodId, name, category, calorie, unit, amount, fat);
                     foods.add(food);

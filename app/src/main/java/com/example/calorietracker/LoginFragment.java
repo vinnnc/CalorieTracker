@@ -14,9 +14,12 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.calorietracker.Database.RestClient;
+import com.example.calorietracker.Database.Users;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+
+import java.util.Date;
 
 public class LoginFragment extends Fragment {
     View vLogin;
@@ -67,24 +70,32 @@ public class LoginFragment extends Fragment {
             if (result.equals("[]"))
                 return "Username or password is incorrect, please try again!";
             else {
-                int userId = -1;
-                String firstName = "";
-                String address = "";
+                Users users = new Users();
                 try {
                     JSONArray jsonArray = new JSONArray(result);
                     JSONObject jsonCredentialObject = jsonArray.getJSONObject(0);
                     JSONObject jsonUsersObject = jsonCredentialObject.getJSONObject("userid");
-                    userId = jsonUsersObject.getInt("userid");
-                    firstName = jsonUsersObject.getString("firstname");
-                    address = jsonUsersObject.getString("address");
+                    Integer userid = jsonUsersObject.getInt("userid");
+                    String firstname = jsonUsersObject.getString("firstname");
+                    String surname = jsonUsersObject.getString("surname");
+                    String email = jsonUsersObject.getString("email");
+                    Date dob = new Date(jsonUsersObject.getString("dob"));
+                    Integer height = jsonUsersObject.getInt("height");
+                    Integer weight = jsonUsersObject.getInt("weight");
+                    String gender = jsonUsersObject.getString("gender");
+                    String address = jsonUsersObject.getString("address");
+                    Integer postcode = jsonUsersObject.getInt("postcode");
+                    Integer activitylv = jsonUsersObject.getInt("activitylv");
+                    Integer steppermile = jsonUsersObject.getInt("steppermile");
+                    users = new Users(userid, firstname, surname, email, dob, height, weight,
+                            gender, address, postcode, activitylv, steppermile);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
                 Intent intent = new Intent(getActivity(), SecondActivity.class);
                 Bundle bundle = new Bundle();
-                bundle.putInt("userId", userId);
-                bundle.putString("firstName", firstName);
-                bundle.putString("address", address);
+                bundle.putParcelable ("users", users);
+                        intent.putExtras(bundle);
                 intent.putExtras(bundle);
                 startActivity(intent);
                 return "";

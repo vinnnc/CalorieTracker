@@ -1,8 +1,21 @@
 package com.example.calorietracker.Database;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.Date;
 
-public class Users {
+public class Users implements Parcelable {
+
+    public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
+        public Users createFromParcel(Parcel in) {
+            return new Users();
+        }
+
+        public Users[] newArray(int size) {
+            return new Users[size];
+        }
+    };
     private Integer userid;
     private String firstname;
     private String surname;
@@ -15,6 +28,9 @@ public class Users {
     private Integer postcode;
     private Integer activitylv;
     private Integer steppermile;
+
+    public Users() {
+    }
 
     public Users(Integer userid, String firstname, String surname, String email, Date dob,
                  Integer height, Integer weight, String gender, String address, Integer postcode,
@@ -127,5 +143,44 @@ public class Users {
 
     public void setSteppermile(Integer steppermile) {
         this.steppermile = steppermile;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(this.userid);
+        dest.writeString(this.firstname);
+        dest.writeString(this.surname);
+        dest.writeString(this.email);
+        dest.writeString(this.dob.toString());
+        dest.writeInt(this.height);
+        dest.writeInt(this.weight);
+        dest.writeString(this.gender);
+        dest.writeString(this.address);
+        dest.writeInt(this.postcode);
+        dest.writeInt(this.activitylv);
+        dest.writeInt(this.steppermile);
+    }
+
+    @Override
+    public String toString() {
+        return "Users{" +
+                "userid=" + userid +
+                ", firstname='" + firstname + '\'' +
+                ", surname='" + surname + '\'' +
+                ", email='" + email + '\'' +
+                ", dob=" + dob +
+                ", height=" + height +
+                ", weight=" + weight +
+                ", gender='" + gender + '\'' +
+                ", address='" + address + '\'' +
+                ", postcode=" + postcode +
+                ", activitylv=" + activitylv +
+                ", steppermile=" + steppermile +
+                '}';
     }
 }
