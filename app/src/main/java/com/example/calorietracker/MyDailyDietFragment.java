@@ -24,6 +24,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -203,9 +205,21 @@ public class MyDailyDietFragment extends Fragment {
             String category = params[0];
             String foodname = params[1];
             int quantity = Integer.valueOf(params[2]);
+            @SuppressLint("SimpleDateFormat")
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             final Bundle bundle = getActivity().getIntent(). getExtras();
             assert bundle != null;
-            Users users = bundle.getParcelable("users");
+            Users users = null;
+            try {
+                users = new Users(bundle.getInt("userid"), bundle.getString("firstname"),
+                        bundle.getString("surname"), bundle.getString("email"),
+                        sdf.parse(bundle.getString("dob")), bundle.getInt("height"),
+                        bundle.getInt("weight"), bundle.getString("gender"),
+                        bundle.getString("address"), bundle.getInt("postcode"),
+                        bundle.getInt("activitylv"), bundle.getInt("steppermile"));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
             String result = RestClient.findFoodByFoodnameAndCategory(foodname,category);
             Food food = new Food();
             try {
@@ -221,7 +235,7 @@ public class MyDailyDietFragment extends Fragment {
             }
             Consumption consumption = new Consumption(conid, users,
                     Calendar.getInstance().getTime(), food, quantity);
-            RestClient.create(consumption);
+            RestClient.create("consumption", consumption);
             return "Consumption has been created";
         }
     }

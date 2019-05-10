@@ -12,7 +12,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.example.calorietracker.Database.Users;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -26,10 +27,18 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         vHome = inflater.inflate(R.layout.fragment_home, container, false);
         TextView tvWelcome = vHome.findViewById(R.id.tv_welcome);
-        final Bundle bundle = getActivity().getIntent(). getExtras();
-        assert bundle != null;
-        final Users users = bundle.getParcelable("users");
-        tvWelcome.setText("Hi, " + users.getFirstname());
+        Bundle bundle = getActivity().getIntent(). getExtras();
+        String jsonUsers = bundle.getString("jsonUsers");
+        String firstName = "";
+        int userId = 0;
+        try {
+            JSONObject jsonObject = new JSONObject(jsonUsers);
+            firstName = jsonObject.getString("firstname");
+            userId = jsonObject.getInt("userid");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        tvWelcome.setText("Hi, " + firstName);
 
         @SuppressLint("SimpleDateFormat")
         final SimpleDateFormat sdfTime = new SimpleDateFormat("yyyy/MM/dd HH:mm");
@@ -39,8 +48,8 @@ public class HomeFragment extends Fragment {
 
         TextView tvGoal = vHome.findViewById(R.id.tv_goal);
         SharedPreferences sharedPref = getActivity()
-                .getSharedPreferences("dailyGoal_" + users.getUserid() + "_"
-                                + users.getFirstname(), Context.MODE_PRIVATE);
+                .getSharedPreferences("dailyGoal_" + userId + "_" + firstName,
+                        Context.MODE_PRIVATE);
 
         @SuppressLint("SimpleDateFormat")
         final SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy/MM/dd");
@@ -61,6 +70,8 @@ public class HomeFragment extends Fragment {
         }
 
         Button btnConfirm = vHome.findViewById(R.id.btn_set);
+        final int finalUserId = userId;
+        final String finalFirstName = firstName;
         btnConfirm.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -73,8 +84,8 @@ public class HomeFragment extends Fragment {
 
                 int goal = Integer.valueOf(etGoal.getText().toString());
                 SharedPreferences sharedPref = getActivity()
-                        .getSharedPreferences("dailyGoal_" + users.getUserid() + "_"
-                                        + users.getFirstname(), Context.MODE_PRIVATE);
+                        .getSharedPreferences("dailyGoal_" + finalUserId + "_"
+                                        + finalFirstName, Context.MODE_PRIVATE);
                 SharedPreferences.Editor spEditor = sharedPref.edit();
                 spEditor.putString("date", sdfDate.format(Calendar.getInstance().getTime()));
                 spEditor.putInt("goal", goal);

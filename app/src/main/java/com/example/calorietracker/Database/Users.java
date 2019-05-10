@@ -1,21 +1,9 @@
 package com.example.calorietracker.Database;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
 import java.util.Date;
 
-public class Users implements Parcelable {
+public class Users {
 
-    public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
-        public Users createFromParcel(Parcel in) {
-            return new Users();
-        }
-
-        public Users[] newArray(int size) {
-            return new Users[size];
-        }
-    };
     private Integer userid;
     private String firstname;
     private String surname;
@@ -143,27 +131,6 @@ public class Users implements Parcelable {
 
     public void setSteppermile(Integer steppermile) {
         this.steppermile = steppermile;
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(this.userid);
-        dest.writeString(this.firstname);
-        dest.writeString(this.surname);
-        dest.writeString(this.email);
-        dest.writeString(this.dob.toString());
-        dest.writeInt(this.height);
-        dest.writeInt(this.weight);
-        dest.writeString(this.gender);
-        dest.writeString(this.address);
-        dest.writeInt(this.postcode);
-        dest.writeInt(this.activitylv);
-        dest.writeInt(this.steppermile);
     }
 
     @Override

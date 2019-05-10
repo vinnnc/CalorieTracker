@@ -90,11 +90,11 @@ public class RestClient {
         return textResult.toString();
     }
 
-    public static void create(Object object) {
+    public static void create(String name, Object object) {
         //initialise
         URL url;
         HttpURLConnection conn = null;
-        final String methodPath = "restws." + object.getClass().toString().toLowerCase();
+        final String methodPath = "restws." + name;
         try {
             Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX").create();
             String stringUsersJson = gson.toJson(object);

@@ -21,6 +21,8 @@ import android.widget.TextView;
 import com.example.calorietracker.Database.Credential;
 import com.example.calorietracker.Database.RestClient;
 import com.example.calorietracker.Database.Users;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -161,14 +163,16 @@ public class SignUpFragment extends Fragment {
                         params[9], Integer.valueOf(params[10]), Integer.valueOf(params[11]),
                         Integer.valueOf(params[12]));
                 Credential credential = new Credential(params[0], users, params[1]);
-                RestClient.create(users);
-                RestClient.create(credential);
+                RestClient.create("users", users);
+                RestClient.create("credential", credential);
             } catch (Exception e) {
                 e.printStackTrace();
             }
             Intent intent = new Intent(getActivity(), SecondActivity.class);
-            Bundle bundle= new Bundle();
-            bundle.putParcelable("users", users);
+            Bundle bundle = new Bundle();
+            Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX").create();
+            String jsonUsers = gson.toJson(users);
+            bundle.putString("jsonUsers", jsonUsers);
             intent.putExtras (bundle);
             startActivity(intent);
             return "";
