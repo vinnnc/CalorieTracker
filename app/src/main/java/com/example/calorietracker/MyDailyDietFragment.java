@@ -28,6 +28,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -131,10 +132,10 @@ public class MyDailyDietFragment extends Fragment {
                     etQuantity.setError("Quantity cannot be empty");
                     return;
                 }
-                int Amount = Integer.valueOf(etQuantity.getText().toString());
+                int amount = Integer.valueOf(etQuantity.getText().toString());
                 CreateConsumptionAsyncTask createConsumptionAsyncTask =
                         new CreateConsumptionAsyncTask();
-                createConsumptionAsyncTask.execute();
+                createConsumptionAsyncTask.execute(category, foodname, "" + amount);
 
             }
         });
@@ -211,16 +212,18 @@ public class MyDailyDietFragment extends Fragment {
             assert bundle != null;
             Users users = null;
             try {
-                users = new Users(bundle.getInt("userid"), bundle.getString("firstname"),
-                        bundle.getString("surname"), bundle.getString("email"),
-                        sdf.parse(bundle.getString("dob")), bundle.getInt("height"),
-                        bundle.getInt("weight"), bundle.getString("gender"),
-                        bundle.getString("address"), bundle.getInt("postcode"),
-                        bundle.getInt("activitylv"), bundle.getInt("steppermile"));
-            } catch (ParseException e) {
+                JSONObject jsonUser = new JSONObject(bundle.getString("jsonUsers"));
+                Date dob = sdf.parse(jsonUser.getString("dob"));
+                users = new Users(jsonUser.getInt("userid"),
+                        jsonUser.getString("firstname"), jsonUser.getString("surname"),
+                        jsonUser.getString("email"), dob, jsonUser.getInt("height"),
+                        jsonUser.getInt("weight"), jsonUser.getString("gender"),
+                        jsonUser.getString("address"), jsonUser.getInt("postcode"),
+                        jsonUser.getInt("activitylv"), jsonUser.getInt("steppermile"));
+            } catch (ParseException | JSONException e) {
                 e.printStackTrace();
             }
-            String result = RestClient.findFoodByFoodnameAndCategory(foodname,category);
+            String result = RestClient.findFoodByFoodnameAndCategory(foodname, category);
             Food food = new Food();
             try {
                 JSONObject jsonObject = new JSONObject(result);

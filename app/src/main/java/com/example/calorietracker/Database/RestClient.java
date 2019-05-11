@@ -269,7 +269,7 @@ public class RestClient {
 
     public static String findFoodByFoodnameAndCategory(String foodname, String category)
     {
-        final String methodPath = "restws.users/findFoodByFoodnameAndCategory/"
+        final String methodPath = "restws.food/findByFoodnameAndCategory/"
                 + foodname + "/" + category;
         //initialise
         URL url;
