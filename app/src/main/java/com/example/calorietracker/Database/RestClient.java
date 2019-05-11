@@ -199,7 +199,6 @@ public class RestClient {
 
     public static String findTotalConsumedAndBurned(int userId, String date, int goal,
                                                     int totalSteps) {
-        date = date.replaceAll("/", "");
         final String methodPath = "restws.report/createReportA/"
                 + userId + "/" + date + "/" + goal + "/" + totalSteps;
         //initialise

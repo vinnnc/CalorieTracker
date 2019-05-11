@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.calorietracker.Database.Consumption;
 import com.example.calorietracker.Database.Food;
@@ -241,6 +242,12 @@ public class MyDailyDietFragment extends Fragment {
                     Calendar.getInstance().getTime(), food, quantity);
             RestClient.create("consumption", consumption);
             return "Consumption has been created";
+        }
+
+        @Override
+        protected void onPostExecute(String response) {
+            Toast.makeText(getActivity().getApplicationContext(), response, Toast.LENGTH_SHORT)
+                    .show();
         }
     }
 }

@@ -54,7 +54,7 @@ public class CalorieTrackerFragment extends Fragment {
                         Context.MODE_PRIVATE);
         int goal = sharedPref.getInt("goal", 0);
         TextView tvGoal = vCalorieTracker.findViewById(R.id.tv_goal);
-        tvGoal.setText("    Daily Calorie Goal: " + goal);
+        tvGoal.setText("    Daily Calorie Goal: " + goal + " KJ");
 
         db = Room.databaseBuilder(getActivity().getApplicationContext(),
                 StepDatabase.class, "StepDatabase_" + userId + "_" + firstName)
@@ -87,7 +87,7 @@ public class CalorieTrackerFragment extends Fragment {
             int totalSteps = Integer.valueOf(params[2]);
 
             @SuppressLint("SimpleDateFormat")
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             String date = sdf.format(Calendar.getInstance().getTime());
             String result = RestClient.findTotalConsumedAndBurned(userId, date, goal, totalSteps);
             try {
@@ -108,9 +108,9 @@ public class CalorieTrackerFragment extends Fragment {
             TextView tvTotalBurned = vCalorieTracker.findViewById(R.id.tv_total_burned);
             TextView tvRemain = vCalorieTracker.findViewById(R.id.tv_remain);
             String[] result = response.split("; ");
-            tvTotalConsumed.setText("    Total Calorie Consumed: " + result[0]);
-            tvTotalBurned.setText("    Total Calorie Burned: " + result[1]);
-            tvRemain.setText("    Calorie Remaining: " + result[2]);
+            tvTotalConsumed.setText("    Total Calorie Consumed: " + result[0] + " KJ");
+            tvTotalBurned.setText("    Total Calorie Burned: " + result[1] + " KJ");
+            tvRemain.setText("    Calorie Remaining: " + result[2] + " KJ");
         }
     }
 
