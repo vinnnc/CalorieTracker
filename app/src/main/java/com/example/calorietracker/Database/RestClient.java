@@ -197,9 +197,11 @@ public class RestClient {
         return textResult.toString();
     }
 
-    public static String findTotalConsumedAndBurned(int userId, String date)
-    {
-        final String methodPath = "restws.report/createReportA/" + userId + "/" + date;
+    public static String findTotalConsumedAndBurned(int userId, String date, int goal,
+                                                    int totalSteps) {
+        date = date.replaceAll("/", "");
+        final String methodPath = "restws.report/createReportA/"
+                + userId + "/" + date + "/" + goal + "/" + totalSteps;
         //initialise
         URL url;
         HttpURLConnection conn = null;

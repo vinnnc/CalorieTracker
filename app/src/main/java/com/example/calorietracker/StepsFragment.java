@@ -1,11 +1,11 @@
 package com.example.calorietracker;
 
 import android.annotation.SuppressLint;
-import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
 import android.arch.persistence.room.Room;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +16,9 @@ import android.widget.Toast;
 
 import com.example.calorietracker.Database.Step;
 import com.example.calorietracker.Database.StepDatabase;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -32,8 +35,17 @@ public class StepsFragment extends Fragment {
 
         final Bundle bundle = getActivity().getIntent(). getExtras();
         assert bundle != null;
-        final String firstName = bundle.getString("firstName");
-        final int userId = bundle.getInt("userId");
+        String jsonUsers = bundle.getString("jsonUsers");
+        int userId = 0;
+        String firstName = "";
+        try {
+            JSONObject jsonObject = new JSONObject(jsonUsers);
+            firstName = jsonObject.getString("firstname");
+            userId = jsonObject.getInt("userid");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
         db = Room.databaseBuilder(getActivity().getApplicationContext(),
                 StepDatabase.class, "StepDatabase_" + userId + "_" + firstName)
                 .fallbackToDestructiveMigration().build();
@@ -90,18 +102,15 @@ public class StepsFragment extends Fragment {
             List<Step> steps = db.stepDao().getAll();
             @SuppressLint("SimpleDateFormat")
             SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy/MM/dd");
-
-            @SuppressLint("SimpleDateFormat")
-            SimpleDateFormat sdfTime = new SimpleDateFormat("HH:mm:ss");
             if (!(steps.isEmpty() || steps == null)) {
                 StringBuilder allSteps = new StringBuilder();
                 String currentDate = sdfDate.format(Calendar.getInstance().getTime());
                 for (Step step : steps) {
                     try {
-                        String dateStr = sdfDate.parse(step.getTime()).toString();
+                        String dateStr = sdfDate.format(sdfDate.parse(step.getTime()));
                         if (currentDate.equals(dateStr)) {
-                            String time = sdfTime.parse(step.getTime()).toString();
-                            String stepStr = "    ID: " + step.getSid() + "    Time: " + time
+                            String stepStr = "    ID: " + step.getSid()
+                                    + "    Time: " + step.getTime()
                                     + "    Step: " + step.getStep() + ";\n";
                             allSteps.append(stepStr);
                         }
@@ -111,7 +120,7 @@ public class StepsFragment extends Fragment {
                 }
                 return allSteps.toString();
             }
-            return "This is not data.";
+            return "    This is not data.";
         }
 
         @Override
@@ -128,7 +137,8 @@ public class StepsFragment extends Fragment {
         protected String doInBackground(Integer... params) {
             @SuppressLint("SimpleDateFormat")
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-            Step step = new Step(sdf.format(Calendar.getInstance().getTime()), params[0]);
+            String time = sdf.format(Calendar.getInstance().getTime());
+            Step step = new Step(time, params[0]);
             db.stepDao().insert(step);
             return "Add successful";
         }
@@ -145,7 +155,7 @@ public class StepsFragment extends Fragment {
 
         @Override
         protected String doInBackground(Integer... params) {
-            Step step = null;
+            Step step;
             int id = params[0];
             step = db.stepDao().findByID(id);
             step.setStep(params[1]);

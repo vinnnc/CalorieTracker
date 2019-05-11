@@ -1,12 +1,13 @@
 package com.example.calorietracker;
 
 import android.annotation.SuppressLint;
-import android.support.v4.app.Fragment;
 import android.arch.persistence.room.Room;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,11 +17,13 @@ import com.example.calorietracker.Database.RestClient;
 import com.example.calorietracker.Database.Step;
 import com.example.calorietracker.Database.StepDatabase;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 public class CalorieTrackerFragment extends Fragment {
     StepDatabase db;
@@ -28,15 +31,24 @@ public class CalorieTrackerFragment extends Fragment {
 
     @SuppressLint("SetTextI18n")
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         vCalorieTracker = inflater.inflate(R.layout.fragment_calorie_tracker, container,
                 false);
 
         final Bundle bundle = getActivity().getIntent(). getExtras();
         assert bundle != null;
-        final int userId = bundle.getInt("userId");
-        final String firstName = bundle.getString("firstName");
+        String jsonUsers = bundle.getString("jsonUsers");
+        int userId = 0;
+        String firstName = "";
+        try {
+            JSONObject jsonObject = new JSONObject(jsonUsers);
+            firstName = jsonObject.getString("firstname");
+            userId = jsonObject.getInt("userid");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
         SharedPreferences sharedPref = getActivity()
                 .getSharedPreferences("dailyGoal_" + userId + "_" + firstName,
                         Context.MODE_PRIVATE);
@@ -48,11 +60,16 @@ public class CalorieTrackerFragment extends Fragment {
                 StepDatabase.class, "StepDatabase_" + userId + "_" + firstName)
                 .fallbackToDestructiveMigration().build();
         TotalStepAsyncTask totalStepAsyncTask = new TotalStepAsyncTask();
-        totalStepAsyncTask.execute();
+        String totalSteps = "";
+        try {
+            totalSteps = totalStepAsyncTask.execute().get();
+        } catch (ExecutionException |InterruptedException e) {
+            e.printStackTrace();
+        }
 
         TotalConsumedAndBurnedAsyncTask totalConsumedAndBurnedAsyncTask =
                 new TotalConsumedAndBurnedAsyncTask();
-        totalConsumedAndBurnedAsyncTask.execute("" + userId);
+        totalConsumedAndBurnedAsyncTask.execute("" + userId, "" + goal, totalSteps);
 
         return vCalorieTracker;
     }
@@ -66,11 +83,13 @@ public class CalorieTrackerFragment extends Fragment {
             int totalBurned = 0;
             int remaining = 0;
             int userId = Integer.valueOf(params[0]);
+            int goal = Integer.valueOf(params[1]);
+            int totalSteps = Integer.valueOf(params[2]);
 
             @SuppressLint("SimpleDateFormat")
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
             String date = sdf.format(Calendar.getInstance().getTime());
-            String result = RestClient.findTotalConsumedAndBurned(userId, date);
+            String result = RestClient.findTotalConsumedAndBurned(userId, date, goal, totalSteps);
             try {
                 JSONObject jsonObject = new JSONObject(result);
                 totalConsumed = jsonObject.getInt("totalconsumed");
@@ -91,8 +110,6 @@ public class CalorieTrackerFragment extends Fragment {
             String[] result = response.split("; ");
             tvTotalConsumed.setText("    Total Calorie Consumed: " + result[0]);
             tvTotalBurned.setText("    Total Calorie Burned: " + result[1]);
-            if (Integer.valueOf(result[2]) < 0)
-                result[2] = "0";
             tvRemain.setText("    Calorie Remaining: " + result[2]);
         }
     }

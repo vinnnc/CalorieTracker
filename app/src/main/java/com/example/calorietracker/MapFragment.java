@@ -25,7 +25,7 @@ import static android.support.constraint.Constraints.TAG;
 
 public class MapFragment extends Fragment implements OnMapReadyCallback {
     View vMap;
-    private GoogleMap mMap;
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -40,7 +40,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
         final Bundle bundle = getActivity().getIntent(). getExtras();
         assert bundle != null;
         String addressStr = bundle.getString("address");
@@ -59,8 +58,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             Address address = list.get(0);
             Log.e(TAG, "geoLocate: found a location: " + addressStr);
             LatLng location = new LatLng(address.getLatitude(), address.getLongitude());
-            mMap.addMarker(new MarkerOptions().position(location).title(addressStr));
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 15f));
+            googleMap.addMarker(new MarkerOptions().position(location).title(addressStr));
+            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 15f));
         }
     }
 }
