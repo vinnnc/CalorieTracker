@@ -17,6 +17,9 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -42,7 +45,15 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     public void onMapReady(GoogleMap googleMap) {
         final Bundle bundle = getActivity().getIntent(). getExtras();
         assert bundle != null;
-        String addressStr = bundle.getString("address");
+        String jsonUsers = bundle.getString("jsonUsers");
+        String addressStr = "";
+        try {
+            JSONObject jsonObject = new JSONObject(jsonUsers);
+            addressStr = jsonObject.getString("address");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
         // Add a marker in Sydney and move the camera
         Log.d(TAG, "geoLocate: googlecating");
 
