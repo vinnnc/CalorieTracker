@@ -7,9 +7,9 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Scanner;
@@ -311,28 +311,26 @@ public class RestClient {
         try {
             digest = MessageDigest.getInstance("SHA-1");
             digest.reset();
-            input = digest.digest(str.getBytes("UTF-8"));
+            input = digest.digest(str.getBytes(StandardCharsets.UTF_8));
 
         } catch (NoSuchAlgorithmException e1) {
             e1.printStackTrace();
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
         }
         return convertToHex(input);
     }
 
     private static String convertToHex(byte[] data) {
-        StringBuffer buf = new StringBuffer();
-        for (int i = 0; i < data.length; i++) {
-            int halfbyte = (data[i] >>> 4) & 0x0F;
+        StringBuilder buf = new StringBuilder();
+        for (byte datum : data) {
+            int halfbyte = (datum >>> 4) & 0x0F;
             int two_halfs = 0;
             do {
                 if ((0 <= halfbyte) && (halfbyte <= 9))
                     buf.append((char) ('0' + halfbyte));
                 else
                     buf.append((char) ('a' + (halfbyte - 10)));
-                halfbyte = data[i] & 0x0F;
-            } while(two_halfs++ < 1);
+                halfbyte = datum & 0x0F;
+            } while (two_halfs++ < 1);
         }
         return buf.toString();
     }
