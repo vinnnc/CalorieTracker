@@ -32,7 +32,6 @@ public class StepsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         vSteps = inflater.inflate(R.layout.fragment_steps, container, false);
-
         final Bundle bundle = getActivity().getIntent(). getExtras();
         assert bundle != null;
         String jsonUsers = bundle.getString("jsonUsers");

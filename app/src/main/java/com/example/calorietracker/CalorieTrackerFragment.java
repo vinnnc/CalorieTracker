@@ -120,10 +120,16 @@ public class CalorieTrackerFragment extends Fragment {
         @Override
         protected String doInBackground(Void... voids) {
             int totalStep = 0;
+            @SuppressLint("SimpleDateFormat")
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+            String current = sdf.format(Calendar.getInstance().getTime());
             List<Step> steps = db.stepDao().getAll();
             if (!(steps.isEmpty() || steps == null)) {
-                for (Step step : steps)
-                    totalStep += step.getStep();
+                for (Step step : steps) {
+                    String date = step.getTime().substring(0,10);
+                    if (date.equals(current))
+                        totalStep += step.getStep();
+                }
             }
             return "" + totalStep;
         }

@@ -1,25 +1,37 @@
 package com.example.calorietracker;
 
+import android.annotation.SuppressLint;
+import android.graphics.Color;
+import android.os.AsyncTask;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
-import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.Toast;
 
-import com.github.mikephil.charting.charts.LineChart;
-import com.github.mikephil.charting.components.AxisBase;
-import com.github.mikephil.charting.components.XAxis;
-import com.github.mikephil.charting.components.YAxis;
-import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.data.LineData;
-import com.github.mikephil.charting.data.LineDataSet;
-import com.github.mikephil.charting.formatter.IAxisValueFormatter;
+import com.example.calorietracker.Database.RestClient;
+import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.formatter.DefaultValueFormatter;
+import com.github.mikephil.charting.utils.ColorTemplate;
+import com.github.mikephil.charting.utils.MPPointF;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Calendar;
 
 public class ReportFragment extends Fragment {
+    private PieChart chart;
     View vReport;
 
     @Override
@@ -27,36 +39,123 @@ public class ReportFragment extends Fragment {
                              Bundle savedInstanceState) {
         vReport = inflater.inflate(R.layout.fragment_report, container, false);
 
-        LineChart chart = vReport.findViewById(R.id.chart);
-        List<Entry> entries = new ArrayList<>();
-
-        //to display five values, and later formatter is used so years will not have decimal values
-        float[] xAxis = {0f,1f,2f,3f,4f};
-        float[] yAxis = {100, 200, 150, 320, 470};
-
-        for (int i=0; i<xAxis.length; i++)
-            entries.add(new Entry(xAxis[i], yAxis[i]));
-
-        //implementing IAxisValueFormatter interface to show year values not as float/decimal
-        final String[] years = new String[] { "2015", "2016", "2017", "2018","2019" };
-        IAxisValueFormatter formatter = new IAxisValueFormatter() {
-
+        DatePicker dpSingleDate = vReport.findViewById(R.id.dp_single_date);
+        dpSingleDate.setMaxDate(Calendar.getInstance().getTimeInMillis());
+        Button btnBarChart = vReport.findViewById(R.id.btn_bar_chart);
+        btnBarChart.setOnClickListener(new View.OnClickListener() {
             @Override
-            public String getFormattedValue(float value, AxisBase axis) {
-                return years[(int)value];
+            public void onClick(View v) {
+                FragmentManager fragmentManager = getFragmentManager();
+                fragmentManager.beginTransaction().replace(R.id.content_frame,
+                        new Report2Fragment()).commit();
             }
-        };
+        });
 
-        LineDataSet dataSet = new LineDataSet(entries, "This is Demo");
-        dataSet.setAxisDependency(YAxis.AxisDependency.LEFT);
-        LineData lineData = new LineData(dataSet); chart.setData(lineData);
-        XAxis xAxisFromChart = chart.getXAxis(); xAxisFromChart.setDrawAxisLine(true);
-        xAxisFromChart.setValueFormatter(formatter);
+        chart = vReport.findViewById(R.id.pie_chart);
+        chart.setUsePercentValues(false);
+        chart.getDescription().setEnabled(false);
+        chart.setExtraOffsets(5, 10, 5, 5);
+        chart.setDragDecelerationFrictionCoef(0.95f);
+        chart.setCenterText("History Data");
+        chart.setDrawHoleEnabled(true);
+        chart.setHoleColor(Color.WHITE);
+        chart.setTransparentCircleColor(Color.WHITE);
+        chart.setTransparentCircleAlpha(110);
+        chart.setHoleRadius(58f);
+        chart.setTransparentCircleRadius(61f);
+        chart.setDrawCenterText(true);
+        chart.setRotationAngle(0);
+        chart.setRotationEnabled(true);
+        chart.setEntryLabelColor(Color.BLACK);
+        chart.setEntryLabelTextSize(12f);
 
-        // minimum axis-step (interval) is 1,if no, the same value will be displayed multiple times
-        xAxisFromChart.setGranularity(1f);
-        xAxisFromChart.setPosition(XAxis.XAxisPosition.BOTTOM);
+        Button btnCheck1 =  vReport.findViewById(R.id.btn_check_1);
+        btnCheck1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DatePicker pdSingleDate = vReport.findViewById(R.id.dp_single_date);
+                String monthStr;
+                String dayStr;
+                int month = pdSingleDate.getMonth() + 1;
+                int day = pdSingleDate.getDayOfMonth();
+                if (month < 10)
+                    monthStr = "0" + month;
+                else
+                    monthStr = "" + month;
+
+                if (day < 10)
+                    dayStr = "0" + day;
+                else
+                    dayStr = "" + day;
+
+                String singleDate = pdSingleDate.getYear() + "-" + monthStr + "-"
+                        + dayStr;
+                Bundle bundle = getActivity().getIntent(). getExtras();
+                String jsonUsers = bundle.getString("jsonUsers");
+                int userId = 0;
+                try {
+                    JSONObject jsonObject = new JSONObject(jsonUsers);
+                    userId = jsonObject.getInt("userid");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                PieChartAsyncTask pieChartAsyncTask = new PieChartAsyncTask();
+                pieChartAsyncTask.execute("" + userId, singleDate);
+            }
+        });
 
         return vReport;
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    private class PieChartAsyncTask extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected String doInBackground(String... strings) {
+            return RestClient.findReportByUserIdAndDate(strings[0], strings[1]);
+        }
+
+        @Override
+        protected void onPostExecute(String response) {
+            if (response.equals("[]")) {
+                Toast.makeText(getActivity().getApplicationContext(),
+                        "There is no data on that date.", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            int totalConsumed = -1;
+            int totalBurned = -1;
+            int remaining = -1;
+
+            try {
+                JSONArray jsonArray = new JSONArray(response);
+                JSONObject jsonObject = jsonArray.getJSONObject(0);
+                totalConsumed = jsonObject.getInt("totalcalconsumed");
+                totalBurned = jsonObject.getInt("totalcalburned");
+                int goal = jsonObject.getInt("calgoal");
+                remaining = goal + totalConsumed - totalBurned;
+                if (remaining < 0)
+                    remaining = 0;
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            ArrayList<PieEntry> entries = new ArrayList<>();
+            entries.add(new PieEntry(totalConsumed, "Total Consumed"));
+            entries.add(new PieEntry(totalBurned, "Total Burned"));
+            entries.add(new PieEntry(remaining, "Remaining"));
+            PieDataSet dataSet = new PieDataSet(entries, "History Daily Report");
+            dataSet.setDrawIcons(false);
+            dataSet.setSliceSpace(3f);
+            dataSet.setIconsOffset(new MPPointF(0, 40));
+            ArrayList<Integer> colors = new ArrayList<>();
+            for (int c : ColorTemplate.VORDIPLOM_COLORS)
+                colors.add(c);
+            colors.add(ColorTemplate.getHoloBlue());
+            dataSet.setColors(colors);
+            PieData data = new PieData(dataSet);
+            data.setValueFormatter(new DefaultValueFormatter(0));
+            data.setValueTextSize(11f);
+            data.setValueTextColor(Color.BLACK);
+            chart.setData(data);
+        }
     }
 }
