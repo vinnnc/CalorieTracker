@@ -42,4 +42,11 @@
         android:layout_marginBottom="10pt"
         android:id="@+id/tv_remain"/>
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="Force Post Report"
+        android:id="@+id/btn_force_post_report"/>
+
 </LinearLayout>

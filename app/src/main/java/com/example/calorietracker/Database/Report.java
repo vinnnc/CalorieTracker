@@ -1,5 +1,6 @@
 package com.example.calorietracker.Database;
 
+import java.util.Calendar;
 import java.util.Date;
 
 public class Report {
@@ -11,11 +12,11 @@ public class Report {
     private Integer totalsteps;
     private Integer calgoal;
 
-    public Report(Integer repid, Users userid, Date repdate, Integer totalcalconsumed,
+    public Report(Integer repid, Users userid, Integer totalcalconsumed,
                   Integer totalcalburned, Integer totalsteps, Integer calgoal) {
         this.repid = repid;
         this.userid = userid;
-        this.repdate = repdate;
+        this.repdate = Calendar.getInstance().getTime();
         this.totalcalconsumed = totalcalconsumed;
         this.totalcalburned = totalcalburned;
         this.totalsteps = totalsteps;

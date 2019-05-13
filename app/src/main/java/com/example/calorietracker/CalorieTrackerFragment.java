@@ -1,8 +1,11 @@
 package com.example.calorietracker;
 
 import android.annotation.SuppressLint;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.arch.persistence.room.Room;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -28,15 +31,25 @@ import java.util.concurrent.ExecutionException;
 public class CalorieTrackerFragment extends Fragment {
     StepDatabase db;
     View vCalorieTracker;
+    private AlarmManager alarmMgr;
+    private Intent alarmIntent;
+    private PendingIntent pendingIntent;
+    private Calendar calendar;
 
     @SuppressLint("SetTextI18n")
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+                             final Bundle savedInstanceState) {
         vCalorieTracker = inflater.inflate(R.layout.fragment_calorie_tracker, container,
                 false);
 
-        final Bundle bundle = getActivity().getIntent(). getExtras();
+        // Set the alarm to start at 23:59.
+        calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(System.currentTimeMillis());
+        calendar.set(Calendar.HOUR_OF_DAY, 23);
+        calendar.set(Calendar.MINUTE, 59);
+
+        Bundle bundle = getActivity().getIntent(). getExtras();
         assert bundle != null;
         String jsonUsers = bundle.getString("jsonUsers");
         int userId = 0;
@@ -70,6 +83,22 @@ public class CalorieTrackerFragment extends Fragment {
         TotalConsumedAndBurnedAsyncTask totalConsumedAndBurnedAsyncTask =
                 new TotalConsumedAndBurnedAsyncTask();
         totalConsumedAndBurnedAsyncTask.execute("" + userId, "" + goal, totalSteps);
+
+//        alarmMgr = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
+//        alarmIntent = new Intent(getActivity(), ScheduledIntentService.class);
+//        alarmIntent.putExtras (bundle);
+//        pendingIntent = PendingIntent.getService(getActivity(), 0, alarmIntent, 0);
+//        alarmMgr.setRepeating(AlarmManager.RTC, calendar.getTimeInMillis(),
+//                AlarmManager.INTERVAL_DAY, pendingIntent);
+//
+//        Button btnForcePostReport = vCalorieTracker.findViewById(R.id.btn_force_post_report);
+//        btnForcePostReport.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                ScheduledIntentService scheduledIntentService = new ScheduledIntentService();
+//                scheduledIntentService.onHandleIntent(getActivity().getIntent());
+//            }
+//        });
 
         return vCalorieTracker;
     }
