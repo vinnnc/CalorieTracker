@@ -84,6 +84,7 @@ public class SignUpFragment extends Fragment {
                  SignUpAsyncTask signUpAsyncTask = new SignUpAsyncTask();
                  EditText etUsername = vSignUp.findViewById(R.id.etUsername);
                  EditText etPassword = vSignUp.findViewById(R.id.etPassword);
+                 EditText etPassword2 = vSignUp.findViewById(R.id.etPassword2);
                  EditText etFirstName = vSignUp.findViewById(R.id.etFirstName);
                  EditText etSurname = vSignUp.findViewById(R.id.etSurname);
                  EditText etEmail = vSignUp.findViewById(R.id.etEmail);
@@ -97,6 +98,7 @@ public class SignUpFragment extends Fragment {
                  EditText etStepPerMile = vSignUp.findViewById(R.id.etStepPerMile);
                  String username = etUsername.getText().toString();
                  String password = etPassword.getText().toString();
+                 String password2 = etPassword2.getText().toString();
                  String firstName = etFirstName.getText().toString();
                  String surname = etSurname.getText().toString();
                  String email = etEmail.getText().toString();
@@ -109,28 +111,66 @@ public class SignUpFragment extends Fragment {
                  String postcode = spPostcode.getSelectedItem().toString().substring(0,4);
                  String activityLv = spActivityLv.getSelectedItem().toString().substring(0,1);
                  String stepPerMile = etStepPerMile.getText().toString();
-                 if (username.isEmpty())
+                 boolean allGood = true;
+                 if (username.isEmpty()) {
                      etUsername.setError("Username cannot be empty");
-                 if (password.isEmpty())
+                     allGood = false;
+                 }
+                 if (password.isEmpty()) {
                      etPassword.setError("Password cannot be empty");
-                 if (firstName.isEmpty())
+                     allGood = false;
+                 }
+                 if (!password.matches("^[a-zA-Z]\\w{3,14}$")) {
+                     etPassword.setError("Password is invalid, please try another one.");
+                     allGood = false;
+                 }
+                 if (!password.equals(password2)) {
+                     etPassword.setError("Password is not match, please try again");
+                     allGood = false;
+                 }
+                 if (firstName.isEmpty()) {
                      etFirstName.setError("Full name cannot be empty");
-                 if (surname.isEmpty())
+                     allGood = false;
+                 }
+                 if (surname.isEmpty()) {
                      etSurname.setError("Surname cannot be empty");
-                 if (email.isEmpty())
+                     allGood = false;
+                 }
+                 if (email.isEmpty()) {
                      etEmail.setError("Email cannot be empty");
-                 if (height.isEmpty())
+                     allGood = false;
+                 }
+                 if (!email.matches("^.+@[^.].*\\.[a-z]{2,}$")) {
+                     etEmail.setError("Email is invalid, please try again");
+                     allGood = false;
+                 }
+                 if (height.isEmpty()) {
                      etHeight.setError("Height cannot be empty");
-                 if (weight.isEmpty())
+                     allGood = false;
+                 }
+                 int heightInt = Integer.valueOf(height);
+                 if (heightInt < 50 || heightInt > 260) {
+                     etHeight.setError("Height is invalid, please try again (between 50 and 260)");
+                     allGood = false;
+                 }
+                 if (weight.isEmpty()) {
                      etWeight.setError("Weight cannot be empty");
-                 if (address.isEmpty())
+                     allGood = false;
+                 }
+                 int weightInt = Integer.valueOf(weight);
+                 if (weightInt < 20 || weightInt > 650) {
+                     etWeight.setError("Weight is invalid, please try again (between 20 and 650)");
+                     allGood = false;
+                 }
+                 if (address.isEmpty()) {
                      etAddress.setError("Address cannot be empty");
-                 if (stepPerMile.isEmpty())
+                     allGood = false;
+                 }
+                 if (stepPerMile.isEmpty()) {
                      etStepPerMile.setError("Step per mile cannot be empty");
-                 if (!(username.isEmpty() || password.isEmpty() || firstName.isEmpty()
-                         || surname.isEmpty() || email.isEmpty() || height.isEmpty()
-                         || weight.isEmpty() || gender.isEmpty() || address.isEmpty()
-                         || stepPerMile.isEmpty()))
+                     allGood = false;
+                 }
+                 if (allGood)
                      signUpAsyncTask.execute(username, password, firstName, surname, email, dob,
                              height, weight, gender, address, postcode, activityLv,stepPerMile);
                  else {
