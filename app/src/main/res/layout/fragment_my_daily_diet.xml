@@ -9,7 +9,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="My Daily Diet"
-        android:textSize="12pt"
+        android:textSize="15pt"
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="10pt"/>
 
@@ -33,12 +33,11 @@
     <Spinner
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/sp_food"
-        android:layout_marginBottom="10pt">
+        android:id="@+id/sp_food" >
     </Spinner>
 
     <ImageView
-        android:layout_width="wrap_content"
+        android:layout_width="100pt"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:id="@+id/iv_food"/>

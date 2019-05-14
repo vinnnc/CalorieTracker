@@ -1,11 +1,14 @@
 package com.example.calorietracker;
 
 import android.annotation.SuppressLint;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +16,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,6 +30,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -106,16 +111,9 @@ public class MyDailyDietFragment extends Fragment {
         spFood.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String keyword = parent.getItemAtPosition(position).toString();
-                Spinner spCategory = vMyDailyFragment.findViewById(R.id.sp_category);
-                boolean isPlant = false;
-                ArrayList<String> plants = new ArrayList<>();
-                plants.add("Vegetable");
-                plants.add("Fruit");
-                if (plants.contains(spCategory.getSelectedItem().toString()))
-                    isPlant = true;
+                String food = parent.getItemAtPosition(position).toString();
                 SearchAsyncTask searchAsyncTask= new SearchAsyncTask();
-                searchAsyncTask.execute(keyword, String.valueOf(isPlant));
+                searchAsyncTask.execute(food);
             }
 
             @Override
@@ -184,18 +182,41 @@ public class MyDailyDietFragment extends Fragment {
     }
 
     @SuppressLint("StaticFieldLeak")
-    private class SearchAsyncTask extends AsyncTask<String, Void, String[]> {
+    private class SearchAsyncTask extends AsyncTask<String, Void, String> {
 
         @Override
-        protected String[] doInBackground(String... params) {
-            return new String[]{API.search(params[0], new String[]{"num"}, new String[]{"1"},
-                    Boolean.valueOf(params[1])), params[0]};
+        protected String doInBackground(String... params) {
+            return API.search(params[0], new String[]{"num"}, new String[]{"1"});
         }
 
         @Override
-        protected void onPostExecute(String[] result) {
+        protected void onPostExecute(String result) {
             TextView tvDescription = vMyDailyFragment.findViewById(R.id.tv_description);
-            tvDescription.setText(API.getSnippet(result[0], result[1]));
+            tvDescription.setText(API.getSnippet(result));
+            ImageView ivFood = vMyDailyFragment.findViewById(R.id.iv_food);
+            DownloadImageTask downloadImageTask = new DownloadImageTask();
+            downloadImageTask.execute(API.getImageSrc(result));
+        }
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+
+        protected Bitmap doInBackground(String... strings) {
+            String urldisplay = strings[0];
+            Bitmap bmp = null;
+            try {
+                InputStream in = new java.net.URL(urldisplay).openStream();
+                bmp = BitmapFactory.decodeStream(in);
+            } catch (Exception e) {
+                Log.e("Error", e.getMessage());
+                e.printStackTrace();
+            }
+            return bmp;
+        }
+        protected void onPostExecute(Bitmap result) {
+            ImageView ivFood = vMyDailyFragment.findViewById(R.id.iv_food);
+            ivFood.setImageBitmap(result);
         }
     }
 

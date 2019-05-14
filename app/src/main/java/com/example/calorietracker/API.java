@@ -10,11 +10,9 @@ import java.util.Scanner;
 public class API {
     private static final String GOOGLE_API_KEY = "AIzaSyCUapVuGj91DsfsdeJ3cDpnXtZ39QhyQJk";
 
-    private static final String NON_PLANT_SEARCH_ID_CX = "008965496564990309248:trcyljwlnhu";
+    private static final String SEARCH_ID_CX = "008965496564990309248:zrf4tftxeb4";
 
-    private static final String PLANT_SEARCH_ID_CX = "008965496564990309248:qupehtvwic8";
-
-    public static String search(String keyword, String[] params, String[] values, Boolean isPlant) {
+    public static String search(String keyword, String[] params, String[] values) {
         keyword = keyword.replace(" ", "+");
         URL url;
         HttpURLConnection connection = null;
@@ -29,14 +27,8 @@ public class API {
             }
         }
         try {
-            if (isPlant)
-                url = new URL("https://www.googleapis.com/customsearch/v1?key="
-                        + GOOGLE_API_KEY + "&cx=" + PLANT_SEARCH_ID_CX + "&q=" + keyword
-                        + query_parameter);
-            else
-                url = new URL("https://www.googleapis.com/customsearch/v1?key="
-                        + GOOGLE_API_KEY + "&cx=" + NON_PLANT_SEARCH_ID_CX + "&q=" + keyword
-                        + query_parameter);
+            url = new URL("https://www.googleapis.com/customsearch/v1?key=" + GOOGLE_API_KEY
+                    + "&cx=" + SEARCH_ID_CX + "&q=" + keyword + query_parameter);
             connection = (HttpURLConnection)url.openConnection();
             connection.setReadTimeout(10000);
             connection.setConnectTimeout(15000);
@@ -54,7 +46,7 @@ public class API {
         return textResult.toString();
     }
 
-    public static String getSnippet(String result, String food){
+    public static String getSnippet(String result) {
         String snippet = null;
         try{
             JSONObject jsonObject = new JSONObject(result);
@@ -65,20 +57,29 @@ public class API {
             e.printStackTrace();
             snippet = "NO INFO FOUND";
         }
-        if (snippet.contains(": "))
-            snippet = snippet.split(": ")[1];
         if (snippet.contains("\n"))
             snippet = snippet.replaceAll("\n", "");
         if (snippet.contains("...")) {
-            String[] strings = snippet.split("\\.\\.\\.");
-            for (String string : strings) {
-                if (string.startsWith(food) || string.startsWith(" " + food)) {
-                    snippet = string;
-                    break;
-                }
-            }
+            snippet = snippet.replaceAll("\\.\\.\\.", "");
             snippet = snippet.split("\\.")[0] + ".";
         }
         return snippet;
+    }
+
+    public static String getImageSrc(String result) {
+        String imageSrc = null;
+        try{
+            JSONObject jsonObject = new JSONObject(result);
+            JSONArray jsonArray = jsonObject.getJSONArray("items");
+            if(jsonArray != null && jsonArray.length() > 0) {
+                jsonObject = jsonArray.getJSONObject(0).getJSONObject("pagemap");
+                jsonArray = jsonObject.getJSONArray("cse_thumbnail");
+                imageSrc = jsonArray.getJSONObject(0).getString("src");
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            imageSrc = "NO INFO FOUND";
+        }
+        return imageSrc;
     }
 }
