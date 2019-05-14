@@ -27,18 +27,16 @@ public class AddFoodFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        vAddFood = inflater.inflate(R.layout.fragment_add_food, container, false);
 
-    FindFoodAsyncTask findFoodAsyncTask = new FindFoodAsyncTask();
+        FindFoodAsyncTask findFoodAsyncTask = new FindFoodAsyncTask();
         findFoodAsyncTask.execute();
         ArrayList<Food> foods = null;
         try {
             foods = findFoodAsyncTask.get();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
+        } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
-
         final Spinner spCategory = vAddFood.findViewById(R.id.sp_category);
         final List<String> categoryList = new ArrayList<>();
         for (Food food : foods) {

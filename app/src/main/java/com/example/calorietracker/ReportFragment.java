@@ -123,13 +123,14 @@ public class ReportFragment extends Fragment {
             entries.add(new PieEntry(totalConsumed, "Total Consumed"));
             entries.add(new PieEntry(totalBurned, "Total Burned"));
             entries.add(new PieEntry(remaining, "Remaining"));
-            PieDataSet dataSet = new PieDataSet(entries, "History Report");
+            PieDataSet dataSet = new PieDataSet(entries, "");
             ArrayList<Integer> colors = new ArrayList<>();
             for (int c : ColorTemplate.COLORFUL_COLORS)
                 colors.add(c);
             dataSet.setColors(colors);
             PieData data = new PieData(dataSet);
             chart.setData(data);
+            chart.invalidate();
         }
     }
 }
