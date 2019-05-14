@@ -30,7 +30,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 public class Report2Fragment extends Fragment {
-    private BarChart chart;
     View vReport2;
 
     @Override
@@ -130,7 +129,7 @@ public class Report2Fragment extends Fragment {
 
         @Override
         protected void onPostExecute(String result) {
-            chart = vReport2.findViewById(R.id.bar_chart);
+            BarChart chart = vReport2.findViewById(R.id.bar_chart);
             chart.getDescription().setEnabled(false);
             chart.setDrawGridBackground(false);
             chart.getXAxis().setEnabled(false);
@@ -142,17 +141,14 @@ public class Report2Fragment extends Fragment {
             }
             ArrayList<BarEntry> values1 = new ArrayList<>();
             ArrayList<BarEntry> values2 = new ArrayList<>();
-            ArrayList<String> xAxis = new ArrayList<>();
             try {
                 JSONArray jsonArray = new JSONArray(result);
                 for (int i = 0; i < jsonArray.length(); i++) {
                     JSONObject jsonObject = jsonArray.getJSONObject(i);
-                    String repdate = jsonObject.getString("repdate");
                     int totalConsumed = jsonObject.getInt("totalcalconsumed");
                     int totalBurned = jsonObject.getInt("totalcalburned");
                     values1.add(new BarEntry(i, totalConsumed));
                     values2.add(new BarEntry(i, totalBurned));
-                    xAxis.add(repdate);
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
