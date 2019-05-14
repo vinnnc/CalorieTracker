@@ -1,6 +1,7 @@
 package com.example.calorietracker;
 
 import android.annotation.SuppressLint;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -15,6 +16,9 @@ import android.widget.Toast;
 
 import com.example.calorietracker.Database.RestClient;
 import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -22,6 +26,7 @@ import org.json.JSONObject;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 public class Report2Fragment extends Fragment {
@@ -97,7 +102,7 @@ public class Report2Fragment extends Fragment {
                     e.printStackTrace();
                 }
 
-                Bundle bundle = getActivity().getIntent(). getExtras();
+                Bundle bundle = getActivity().getIntent().getExtras();
                 String jsonUsers = bundle.getString("jsonUsers");
                 int userId = 0;
                 try {
@@ -125,22 +130,58 @@ public class Report2Fragment extends Fragment {
 
         @Override
         protected void onPostExecute(String result) {
+            chart = vReport2.findViewById(R.id.bar_chart);
+            chart.getDescription().setEnabled(false);
+            chart.setDrawGridBackground(false);
+            chart.getXAxis().setEnabled(false);
+
             if (result.equals("[]")) {
                 Toast.makeText(getActivity().getApplicationContext(),
                         "There is no data during that period.", Toast.LENGTH_SHORT).show();
                 return;
             }
+            ArrayList<BarEntry> values1 = new ArrayList<>();
+            ArrayList<BarEntry> values2 = new ArrayList<>();
+            ArrayList<String> xAxis = new ArrayList<>();
             try {
                 JSONArray jsonArray = new JSONArray(result);
                 for (int i = 0; i < jsonArray.length(); i++) {
                     JSONObject jsonObject = jsonArray.getJSONObject(i);
+                    String repdate = jsonObject.getString("repdate");
                     int totalConsumed = jsonObject.getInt("totalcalconsumed");
                     int totalBurned = jsonObject.getInt("totalcalburned");
-                    //TODO - Bar Chart
+                    values1.add(new BarEntry(i, totalConsumed));
+                    values2.add(new BarEntry(i, totalBurned));
+                    xAxis.add(repdate);
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+            BarDataSet set1, set2;
+            if (chart.getData() != null && chart.getData().getDataSetCount() > 0) {
+                set1 = (BarDataSet) chart.getData().getDataSetByIndex(0);
+                set2 = (BarDataSet) chart.getData().getDataSetByIndex(1);
+                set1.setValues(values1);
+                set2.setValues(values2);
+                chart.getData().notifyDataChanged();
+                chart.notifyDataSetChanged();
+            } else {
+                set1 = new BarDataSet(values1, "Total Consumed");
+                set1.setColor(Color.rgb(104, 241, 175));
+                set2 = new BarDataSet(values2, "Total Burned");
+                set2.setColor(Color.rgb(164, 228, 251));
+                BarData data = new BarData(set1, set2);
+                chart.setData(data);
+            }
+            chart.getBarData().setBarWidth(0.2f);
+
+            // restrict the x-axis range
+            chart.getXAxis().setAxisMinimum(1);
+
+            chart.getXAxis().setAxisMaximum(1 + chart.getBarData().getGroupWidth(0.08f,
+                    0.03f) * values1.size());
+            chart.groupBars(1, 0.08f, 0.03f);
+            chart.invalidate();
         }
     }
 }

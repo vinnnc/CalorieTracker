@@ -19,9 +19,7 @@ import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
-import com.github.mikephil.charting.formatter.DefaultValueFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
-import com.github.mikephil.charting.utils.MPPointF;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -31,7 +29,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 public class ReportFragment extends Fragment {
-    private PieChart chart;
     View vReport;
 
     @Override
@@ -50,24 +47,6 @@ public class ReportFragment extends Fragment {
                         new Report2Fragment()).commit();
             }
         });
-
-        chart = vReport.findViewById(R.id.pie_chart);
-        chart.setUsePercentValues(false);
-        chart.getDescription().setEnabled(false);
-        chart.setExtraOffsets(5, 10, 5, 5);
-        chart.setDragDecelerationFrictionCoef(0.95f);
-        chart.setCenterText("History Data");
-        chart.setDrawHoleEnabled(true);
-        chart.setHoleColor(Color.WHITE);
-        chart.setTransparentCircleColor(Color.WHITE);
-        chart.setTransparentCircleAlpha(110);
-        chart.setHoleRadius(58f);
-        chart.setTransparentCircleRadius(61f);
-        chart.setDrawCenterText(true);
-        chart.setRotationAngle(0);
-        chart.setRotationEnabled(true);
-        chart.setEntryLabelColor(Color.BLACK);
-        chart.setEntryLabelTextSize(12f);
 
         Button btnCheck1 =  vReport.findViewById(R.id.btn_check_1);
         btnCheck1.setOnClickListener(new View.OnClickListener() {
@@ -122,10 +101,12 @@ public class ReportFragment extends Fragment {
                         "There is no data on that date.", Toast.LENGTH_SHORT).show();
                 return;
             }
+            PieChart chart = vReport.findViewById(R.id.pie_chart);
+            chart.getDescription().setEnabled(false);
+            chart.setEntryLabelColor(Color.BLACK);
             int totalConsumed = -1;
             int totalBurned = -1;
             int remaining = -1;
-
             try {
                 JSONArray jsonArray = new JSONArray(response);
                 JSONObject jsonObject = jsonArray.getJSONObject(0);
@@ -142,19 +123,12 @@ public class ReportFragment extends Fragment {
             entries.add(new PieEntry(totalConsumed, "Total Consumed"));
             entries.add(new PieEntry(totalBurned, "Total Burned"));
             entries.add(new PieEntry(remaining, "Remaining"));
-            PieDataSet dataSet = new PieDataSet(entries, "History Daily Report");
-            dataSet.setDrawIcons(false);
-            dataSet.setSliceSpace(3f);
-            dataSet.setIconsOffset(new MPPointF(0, 40));
+            PieDataSet dataSet = new PieDataSet(entries, "History Report");
             ArrayList<Integer> colors = new ArrayList<>();
-            for (int c : ColorTemplate.VORDIPLOM_COLORS)
+            for (int c : ColorTemplate.COLORFUL_COLORS)
                 colors.add(c);
-            colors.add(ColorTemplate.getHoloBlue());
             dataSet.setColors(colors);
             PieData data = new PieData(dataSet);
-            data.setValueFormatter(new DefaultValueFormatter(0));
-            data.setValueTextSize(11f);
-            data.setValueTextColor(Color.BLACK);
             chart.setData(data);
         }
     }
