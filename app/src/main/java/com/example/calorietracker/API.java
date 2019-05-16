@@ -12,6 +12,30 @@ public class API {
 
     private static final String SEARCH_ID_CX = "008965496564990309248:zrf4tftxeb4";
 
+    public static String newFood(String keyword) {
+        URL url;
+        HttpURLConnection connection = null;
+        StringBuilder textResult = new StringBuilder();
+        try {
+            url = new URL("https://api.edamam.com/api/food-database/parser?ingr=" + keyword
+                    + "&app_id=e97ff207&app_key=b43dfc50dc08ddf02b9f5198632dd576");
+            connection = (HttpURLConnection)url.openConnection();
+            connection.setReadTimeout(10000);
+            connection.setConnectTimeout(15000);
+            connection.setRequestMethod("GET");
+            connection.setRequestProperty("Content-Type", "application/json");
+            connection.setRequestProperty("Accept", "application/json");
+            Scanner scanner = new Scanner(connection.getInputStream());
+            while (scanner.hasNextLine())
+                textResult.append(scanner.nextLine());
+        }catch (Exception e){
+            e.printStackTrace();
+        }finally{
+            connection.disconnect();
+        }
+        return textResult.toString();
+    }
+
     public static String search(String keyword, String[] params, String[] values) {
         keyword = keyword.replace(" ", "+");
         URL url;

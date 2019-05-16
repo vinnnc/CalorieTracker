@@ -36,7 +36,7 @@ public class HomeFragment extends Fragment {
             JSONObject jsonObject = new JSONObject(jsonUsers);
             firstName = jsonObject.getString("firstname");
             userId = jsonObject.getInt("userid");
-        } catch (JSONException e) {
+        } catch (JSONException | NullPointerException e) {
             e.printStackTrace();
         }
         tvWelcome.setText("Hi, " + firstName);

@@ -2,7 +2,7 @@ package com.example.calorietracker.Database;
 
 public class Food {
     private Integer foodid;
-    private String name;
+    private String foodname;
     private String category;
     private Double calorie;
     private String unit;
@@ -12,10 +12,10 @@ public class Food {
     public Food() {
     }
 
-    public Food(Integer foodid, String name, String category, Double calorie, String unit,
+    public Food(Integer foodid, String foodname, String category, Double calorie, String unit,
                 Double amount, Double fat) {
         this.foodid = foodid;
-        this.name = name;
+        this.foodname = foodname;
         this.category = category;
         this.calorie = calorie;
         this.unit = unit;
@@ -31,12 +31,12 @@ public class Food {
         this.foodid = foodid;
     }
 
-    public String getName() {
-        return name;
+    public String getFoodname() {
+        return foodname;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setFoodname(String foodname) {
+        this.foodname = foodname;
     }
 
     public String getCategory() {

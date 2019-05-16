@@ -377,7 +377,7 @@ public class RestClient {
     }
 
     public static String getHash(String str) {
-        MessageDigest digest = null;
+        MessageDigest digest;
         byte[] input = null;
 
         try {
@@ -404,6 +404,6 @@ public class RestClient {
                 halfbyte = datum & 0x0F;
             } while (two_halfs++ < 1);
         }
-        return buf.toString();
+        return buf.toString().toUpperCase();
     }
 }

@@ -5,16 +5,21 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.example.calorietracker.Database.Food;
 import com.example.calorietracker.Database.RestClient;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -49,6 +54,21 @@ public class AddFoodFragment extends Fragment {
         spCategory.setAdapter(categoryAdapter);
         spCategory.setSelection(0);
 
+        Button btnAddFood = vAddFood.findViewById(R.id.btn_add_food);
+        btnAddFood.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EditText etFoodName = vAddFood.findViewById(R.id.et_food_name);
+                String foodName = etFoodName.getText().toString();
+                if (foodName.isEmpty()) {
+                    etFoodName.setError("Food cannot be empty");
+                    return;
+                }
+                AddFoodAsyncTask addFoodAsyncTask = new AddFoodAsyncTask();
+                addFoodAsyncTask.execute(foodName);
+            }
+        });
+
         return vAddFood;
     }
 
@@ -77,6 +97,45 @@ public class AddFoodFragment extends Fragment {
                 e.printStackTrace();
             }
             return foods;
+        }
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    private class AddFoodAsyncTask extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected String doInBackground(String... strings) {
+            String jsonFood = API.newFood(strings[0]);
+            Spinner spCategory = vAddFood.findViewById(R.id.sp_category);
+            String category = spCategory.getSelectedItem().toString();
+            int foodid = RestClient.count("food") + 1;
+            try {
+                JSONObject jsonObject = new JSONObject(jsonFood);
+                jsonObject = jsonObject.getJSONArray("parsed").getJSONObject(0);
+                jsonObject = jsonObject.getJSONObject("food");
+
+                jsonObject = jsonObject.getJSONObject("nutrients");
+                double calorie = jsonObject.getDouble("ENERC_KCAL");
+                double fat = jsonObject.getDouble("FAT");
+                Food food = new Food(foodid, strings[0], category, calorie, "gram",
+                        100.0, fat);
+                RestClient.create("food", food);
+            } catch (JSONException e) {
+                e.printStackTrace();
+                return "ERROR: There is not food named that, please try another one.";
+            }
+            return "Add food Successfully.";
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            Toast.makeText(getActivity().getApplicationContext(), result, Toast.LENGTH_SHORT)
+                    .show();
+            if (result.equals("Add food Successfully.")) {
+                FragmentManager fragmentManager = getFragmentManager();
+                fragmentManager.beginTransaction().replace(R.id.content_frame,
+                        new MyDailyDietFragment()).commit();
+            }
         }
     }
 }

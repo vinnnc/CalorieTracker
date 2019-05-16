@@ -42,20 +42,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:id="@+id/btn_add"
+        android:id="@+id/btn_add_food"
         android:text="Add"
         android:layout_marginBottom="10pt"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/tv_description"
-        android:layout_marginBottom="10pt"/>
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:id="@+id/iv_food"/>
 
 </LinearLayout>

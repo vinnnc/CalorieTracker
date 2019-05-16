@@ -74,7 +74,7 @@ public class MyDailyDietFragment extends Fragment {
         List<String> foodList = new ArrayList<>();
         for (Food food : foods) {
             if (food.getCategory().equals(categoryList.get(0)))
-                foodList.add(food.getName());
+                foodList.add(food.getFoodname());
         }
         ArrayAdapter<String> foodAdapter = new ArrayAdapter<>(getActivity(),
                 android.R.layout.simple_spinner_item, foodList);
@@ -93,7 +93,7 @@ public class MyDailyDietFragment extends Fragment {
                     newFoodList.clear();
                     for (Food food : finalFoods) {
                         if (food.getCategory().equals(selectedCategory))
-                            newFoodList.add(food.getName());
+                            newFoodList.add(food.getFoodname());
                     }
                 }
                 ArrayAdapter<String> foodAdapter = new ArrayAdapter<>(getActivity(),
@@ -112,8 +112,10 @@ public class MyDailyDietFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String food = parent.getItemAtPosition(position).toString();
+                Spinner spCategory = vMyDailyFragment.findViewById(R.id.sp_category);
+                String category = spCategory.getSelectedItem().toString();
                 SearchAsyncTask searchAsyncTask= new SearchAsyncTask();
-                searchAsyncTask.execute(food);
+                searchAsyncTask.execute(category + " " + food);
             }
 
             @Override
@@ -193,7 +195,6 @@ public class MyDailyDietFragment extends Fragment {
         protected void onPostExecute(String result) {
             TextView tvDescription = vMyDailyFragment.findViewById(R.id.tv_description);
             tvDescription.setText(API.getSnippet(result));
-            ImageView ivFood = vMyDailyFragment.findViewById(R.id.iv_food);
             DownloadImageTask downloadImageTask = new DownloadImageTask();
             downloadImageTask.execute(API.getImageSrc(result));
         }
