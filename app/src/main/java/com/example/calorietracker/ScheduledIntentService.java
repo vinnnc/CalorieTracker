@@ -31,6 +31,15 @@ public class ScheduledIntentService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
+        dailyPost(intent);
+    }
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        return super.onStartCommand(intent,flags,startId);
+    }
+
+    public void dailyPost(Intent intent) {
         @SuppressLint("SimpleDateFormat")
         SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy/MM/dd");
         String currentDate = sdfDate.format(Calendar.getInstance().getTime());
@@ -102,10 +111,5 @@ public class ScheduledIntentService extends IntentService {
         spEditor.putString("date", "");
         spEditor.putInt("goal", 0);
         spEditor.apply();
-    }
-
-    @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-        return super.onStartCommand(intent,flags,startId);
     }
 }
