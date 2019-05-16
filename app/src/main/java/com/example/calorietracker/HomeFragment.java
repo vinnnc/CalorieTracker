@@ -49,7 +49,7 @@ public class HomeFragment extends Fragment {
 
         TextView tvGoal = vHome.findViewById(R.id.tv_goal);
         SharedPreferences sharedPref = getActivity()
-                .getSharedPreferences("dailyGoal",
+                .getSharedPreferences("dailyGoal_" + userId + "_" + firstName,
                         Context.MODE_PRIVATE);
 
         @SuppressLint("SimpleDateFormat")

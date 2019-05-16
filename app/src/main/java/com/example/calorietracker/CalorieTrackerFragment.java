@@ -14,7 +14,6 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.calorietracker.Database.RestClient;
@@ -32,10 +31,6 @@ import java.util.concurrent.ExecutionException;
 public class CalorieTrackerFragment extends Fragment {
     StepDatabase db;
     View vCalorieTracker;
-    private AlarmManager alarmMgr;
-    private Intent alarmIntent;
-    private PendingIntent pendingIntent;
-    private Calendar calendar;
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -45,7 +40,7 @@ public class CalorieTrackerFragment extends Fragment {
                 false);
 
         // Set the alarm to start at 23:59.
-        calendar = Calendar.getInstance();
+        Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis());
         calendar.set(Calendar.HOUR_OF_DAY, 23);
         calendar.set(Calendar.MINUTE, 59);
@@ -85,21 +80,23 @@ public class CalorieTrackerFragment extends Fragment {
                 new TotalConsumedAndBurnedAsyncTask();
         totalConsumedAndBurnedAsyncTask.execute("" + userId, "" + goal, totalSteps);
 
-        alarmMgr = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
-        alarmIntent = new Intent(getActivity(), ScheduledIntentService.class);
+        AlarmManager alarmMgr =
+                (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
+        Intent alarmIntent = new Intent(getActivity(), ScheduledIntentService.class);
         alarmIntent.putExtras (bundle);
-        pendingIntent = PendingIntent.getService(getActivity(), 0, alarmIntent, 0);
+        PendingIntent pendingIntent =
+                PendingIntent.getService(getActivity(), 0, alarmIntent, 0);
         alarmMgr.setRepeating(AlarmManager.RTC, calendar.getTimeInMillis(),
                 AlarmManager.INTERVAL_DAY, pendingIntent);
 
-        Button btnForcePostReport = vCalorieTracker.findViewById(R.id.btn_force_post_report);
-        btnForcePostReport.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ScheduledIntentService scheduledIntentService = new ScheduledIntentService();
-                scheduledIntentService.dailyPost(getActivity().getIntent());
-            }
-        });
+//        Button btnForcePostReport = vCalorieTracker.findViewById(R.id.btn_force_post_report);
+//        btnForcePostReport.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                ScheduledIntentService scheduledIntentService = new ScheduledIntentService();
+//                scheduledIntentService.dailyPostAsyncTask.execute();
+//            }
+//        });
 
         return vCalorieTracker;
     }
