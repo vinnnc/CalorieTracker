@@ -70,6 +70,31 @@ public class API {
         return textResult.toString();
     }
 
+    public static String nearParks(double latitude, double longitude) {
+        URL url;
+        HttpURLConnection connection = null;
+        StringBuilder textResult = new StringBuilder();
+        try {
+            url = new URL("https://maps.googleapis.com/maps/api/place/nearbysearch/json?" +
+                    "location=" + latitude + "," + longitude +
+                    "&radius=5000&types=park&sensor=true&key=" + GOOGLE_API_KEY);
+            connection = (HttpURLConnection)url.openConnection();
+            connection.setReadTimeout(10000);
+            connection.setConnectTimeout(15000);
+            connection.setRequestMethod("GET");
+            connection.setRequestProperty("Content-Type", "application/json");
+            connection.setRequestProperty("Accept", "application/json");
+            Scanner scanner = new Scanner(connection.getInputStream());
+            while (scanner.hasNextLine())
+                textResult.append(scanner.nextLine());
+        }catch (Exception e){
+            e.printStackTrace();
+        }finally{
+            connection.disconnect();
+        }
+        return textResult.toString();
+    }
+
     public static String getSnippet(String result) {
         String snippet = null;
         try{
