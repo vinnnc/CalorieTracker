@@ -1,11 +1,11 @@
 package com.example.calorietracker;
 
 import android.annotation.SuppressLint;
-import android.app.Fragment;
-import android.app.FragmentManager;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -119,14 +119,16 @@ public class SignUpFragment extends Fragment {
                  if (password.isEmpty()) {
                      etPassword.setError("Password cannot be empty");
                      allGood = false;
-                 }
-                 if (!password.matches("^[a-zA-Z]\\w{3,14}$")) {
-                     etPassword.setError("Password is invalid, please try another one.");
-                     allGood = false;
-                 }
-                 if (!password.equals(password2)) {
-                     etPassword.setError("Password is not match, please try again");
-                     allGood = false;
+                 } else {
+                     if (!password.matches("^[a-zA-Z]\\w{3,14}$")) {
+                         etPassword.setError("Password is invalid, please try another one.");
+                         allGood = false;
+                     } else {
+                         if (!password.equals(password2)) {
+                             etPassword.setError("Two passwords do not match, please try again");
+                             allGood = false;
+                         }
+                     }
                  }
                  if (firstName.isEmpty()) {
                      etFirstName.setError("Full name cannot be empty");
@@ -147,20 +149,24 @@ public class SignUpFragment extends Fragment {
                  if (height.isEmpty()) {
                      etHeight.setError("Height cannot be empty");
                      allGood = false;
-                 }
-                 int heightInt = Integer.valueOf(height);
-                 if (heightInt < 50 || heightInt > 260) {
-                     etHeight.setError("Height is invalid, please try again (between 50 and 260)");
-                     allGood = false;
+                 } else {
+                     int heightInt = Integer.valueOf(height);
+                     if (heightInt < 50 || heightInt > 260) {
+                         etHeight.setError("Height is invalid, please try again " +
+                                 "(between 50 and 260)");
+                         allGood = false;
+                     }
                  }
                  if (weight.isEmpty()) {
                      etWeight.setError("Weight cannot be empty");
                      allGood = false;
-                 }
-                 int weightInt = Integer.valueOf(weight);
-                 if (weightInt < 20 || weightInt > 650) {
-                     etWeight.setError("Weight is invalid, please try again (between 20 and 650)");
-                     allGood = false;
+                 } else {
+                     int weightInt = Integer.valueOf(weight);
+                     if (weightInt < 20 || weightInt > 650) {
+                         etWeight.setError("Weight is invalid, please try again " +
+                                 "(between 20 and 650)");
+                         allGood = false;
+                     }
                  }
                  if (address.isEmpty()) {
                      etAddress.setError("Address cannot be empty");

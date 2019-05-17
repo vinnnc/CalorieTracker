@@ -66,7 +66,8 @@ public class SecondActivity extends AppCompatActivity
                 nextFragment = new MapFragment(); break;
             case R.id.nav_sign_out:
                 Intent intent = new Intent(SecondActivity.this, MainActivity.class);
-                startActivity(intent); break;
+                startActivity(intent);
+                return true;
         }
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.content_frame, nextFragment).commit();
