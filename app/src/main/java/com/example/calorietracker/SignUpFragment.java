@@ -171,8 +171,9 @@ public class SignUpFragment extends Fragment {
                      allGood = false;
                  }
                  if (allGood)
-                     signUpAsyncTask.execute(username, password, firstName, surname, email, dob,
-                             height, weight, gender, address, postcode, activityLv,stepPerMile);
+                     signUpAsyncTask.execute(username, RestClient.getHash(password), firstName,
+                             surname, email, dob, height, weight, gender, address, postcode,
+                             activityLv, stepPerMile);
                  else {
                      TextView tvSignUpFeedback = vSignUp.findViewById(R.id.tvSignUpFeedback);
                      tvSignUpFeedback.setText("Sign up failed!");

@@ -98,8 +98,8 @@ public class ScheduledIntentService extends IntentService {
                 }
             }
 
-            int totalConsumed = 0;
-            int totalBurned = 0;
+            int totalConsumed;
+            int totalBurned;
             date = sdfDate.format(Calendar.getInstance().getTime());
             String result = RestClient.findTotalConsumedAndBurned(userId, date, goal, totalSteps);
             try {
