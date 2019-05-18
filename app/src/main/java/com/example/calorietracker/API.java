@@ -114,7 +114,11 @@ public class API {
             snippet = snippet.replaceAll("\n", "");
         if (snippet.contains("...")) {
             snippet = snippet.replaceAll("\\.\\.\\.", "");
-            snippet = snippet.split("\\.")[0] + ".";
+            String[] strings = snippet.split("\\.");
+            snippet = "";
+            for (int i = 0; i < strings.length - 1; i++)
+                snippet += strings[i];
+            snippet += ".";
         }
         return snippet;
     }

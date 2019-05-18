@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
     <TextView
-        android:layout_margin="20pt"
+        android:layout_marginTop="30pt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
@@ -13,6 +13,7 @@
         android:textSize="15pt"/>
 
     <TextView
+        android:layout_marginTop="10pt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/tv_goal"

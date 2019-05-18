@@ -55,14 +55,27 @@ public class AddFoodFragment extends Fragment {
         spCategory.setSelection(0);
 
         Button btnAddFood = vAddFood.findViewById(R.id.btn_add_food);
+        final ArrayList<Food> finalFoods = foods;
         btnAddFood.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 EditText etFoodName = vAddFood.findViewById(R.id.et_food_name);
-                String foodName = etFoodName.getText().toString();
+                final String foodName = etFoodName.getText().toString();
                 if (foodName.isEmpty()) {
                     etFoodName.setError("Food cannot be empty");
                     return;
+                }
+                ArrayList<String> names = new ArrayList<String>(){{
+                    add(foodName);
+                    add(foodName + "s");
+                    add(foodName + "es");
+                    add(foodName.substring(0,-1) + "ies");
+                }};
+                for (Food food : finalFoods){
+                    if (names.contains(food.getFoodname())){
+                        etFoodName.setError("Food is already exist.");
+                        return;
+                    }
                 }
                 AddFoodAsyncTask addFoodAsyncTask = new AddFoodAsyncTask();
                 addFoodAsyncTask.execute(foodName);

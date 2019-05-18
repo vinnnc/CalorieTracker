@@ -188,7 +188,10 @@ public class MyDailyDietFragment extends Fragment {
         protected String doInBackground(String... params) {
             ArrayList<String> special = new ArrayList<String>(){{
                 add("apple");
-                add("kiwi");}};
+                add("kiwi");
+                add("apples");
+                add("kiwis)");
+            }};
             String number = "1";
             if (special.contains(params[0].toLowerCase()))
                 number = "2";

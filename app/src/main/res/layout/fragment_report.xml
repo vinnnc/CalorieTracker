@@ -10,9 +10,10 @@
         android:text="Report"
         android:textSize="15pt"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="20pt"/>
+        android:layout_marginTop="30pt"/>
 
     <Button
+        android:layout_marginTop="10pt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
@@ -56,7 +57,7 @@
         <com.github.mikephil.charting.charts.PieChart
             android:id="@+id/pie_chart"
             android:layout_width="match_parent"
-            android:layout_height="120pt" />
+            android:layout_height="150pt" />
 
     </LinearLayout>
 

@@ -6,15 +6,15 @@
     android:orientation="vertical">
 
     <TextView
-        android:layout_marginTop="20pt"
+        android:layout_marginTop="30pt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Steps"
         android:textSize="15pt"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="20pt"/>
+        android:layout_gravity="center_horizontal" />
 
     <TextView
+        android:layout_marginTop="10pt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="  Add new step record (just enter step): "/>

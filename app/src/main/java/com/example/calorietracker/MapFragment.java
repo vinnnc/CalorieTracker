@@ -52,7 +52,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         LatLng melbourne = new LatLng(-37.814, 144.96332);
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(melbourne, 14));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(melbourne, 13));
 
         final Bundle bundle = getActivity().getIntent(). getExtras();
         assert bundle != null;
@@ -81,7 +81,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             Log.e(TAG, "geoLocate: found a location: " + addressStr);
             LatLng location = new LatLng(address.getLatitude(), address.getLongitude());
             mMap.addMarker(new MarkerOptions().position(location).title(addressStr));
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 14));
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(location));
             NearParksAsyncTask nearParksAsyncTask = new NearParksAsyncTask();
             nearParksAsyncTask.execute(address.getLatitude(), address.getLongitude());
         }
