@@ -112,10 +112,8 @@ public class MyDailyDietFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String food = parent.getItemAtPosition(position).toString();
-                Spinner spCategory = vMyDailyFragment.findViewById(R.id.sp_category);
-                String category = spCategory.getSelectedItem().toString();
                 SearchAsyncTask searchAsyncTask= new SearchAsyncTask();
-                searchAsyncTask.execute(category + " " + food);
+                searchAsyncTask.execute(food);
             }
 
             @Override
@@ -188,7 +186,13 @@ public class MyDailyDietFragment extends Fragment {
 
         @Override
         protected String doInBackground(String... params) {
-            return API.search(params[0], new String[]{"num"}, new String[]{"1"});
+            ArrayList<String> special = new ArrayList<String>(){{
+                add("apple");
+                add("kiwi");}};
+            String number = "1";
+            if (special.contains(params[0].toLowerCase()))
+                number = "2";
+            return API.search(params[0], new String[]{"num"}, new String[]{number});
         }
 
         @Override

@@ -12,13 +12,17 @@ public class API {
 
     private static final String SEARCH_ID_CX = "008965496564990309248:zrf4tftxeb4";
 
+    private static final String FOOD_API_ID = "e97ff207";
+
+    private static final String FOOD_API_KEY = "b43dfc50dc08ddf02b9f5198632dd576";
+
     public static String newFood(String keyword) {
         URL url;
         HttpURLConnection connection = null;
         StringBuilder textResult = new StringBuilder();
         try {
             url = new URL("https://api.edamam.com/api/food-database/parser?ingr=" + keyword
-                    + "&app_id=e97ff207&app_key=b43dfc50dc08ddf02b9f5198632dd576");
+                    + "&app_id=" + FOOD_API_ID + "&app_key=" + FOOD_API_KEY);
             connection = (HttpURLConnection)url.openConnection();
             connection.setReadTimeout(10000);
             connection.setConnectTimeout(15000);
