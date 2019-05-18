@@ -109,11 +109,20 @@ public class MyDailyDietFragment extends Fragment {
         });
 
         spFood.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @SuppressLint("SetTextI18n")
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String food = parent.getItemAtPosition(position).toString();
                 SearchAsyncTask searchAsyncTask= new SearchAsyncTask();
                 searchAsyncTask.execute(food);
+                TextView tvQuantity = vMyDailyFragment.findViewById(R.id.tv_quantity);
+                for (Food object: finalFoods) {
+                    if (object.getFoodname().equals(food)) {
+                        tvQuantity.setText("  Quantity you consumed (per " + object.getAmount()
+                                + " " + object.getUnit() + "):");
+                        return;
+                    }
+                }
             }
 
             @Override
@@ -281,6 +290,9 @@ public class MyDailyDietFragment extends Fragment {
         protected void onPostExecute(String response) {
             Toast.makeText(getActivity().getApplicationContext(), response, Toast.LENGTH_SHORT)
                     .show();
+            FragmentManager fragmentManager = getFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.content_frame,
+                    new CalorieTrackerFragment()).commit();
         }
     }
 }

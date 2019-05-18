@@ -104,6 +104,7 @@ public class ReportFragment extends Fragment {
             PieChart chart = vReport.findViewById(R.id.pie_chart);
             chart.getDescription().setEnabled(false);
             chart.setEntryLabelColor(Color.BLACK);
+            chart.setEntryLabelTextSize(12f);
             int totalConsumed = -1;
             int totalBurned = -1;
             int remaining = -1;
@@ -129,6 +130,7 @@ public class ReportFragment extends Fragment {
                 colors.add(c);
             dataSet.setColors(colors);
             PieData data = new PieData(dataSet);
+            data.setValueTextSize(11f);
             chart.setData(data);
             chart.invalidate();
         }

@@ -170,7 +170,7 @@ public class CalorieTrackerFragment extends Fragment {
         @Override
         protected void onPostExecute(String response) {
             TextView tvTotalStep = vCalorieTracker.findViewById(R.id.tv_total_steps);
-            tvTotalStep.setText("    Total Daily Steps: " + response);
+            tvTotalStep.setText("    Total Daily Steps: " + response + " step(s)");
         }
     }
 

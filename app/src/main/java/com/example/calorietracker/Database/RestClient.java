@@ -16,7 +16,7 @@ import java.util.Scanner;
 
 public class RestClient {
     private final static String BASE_URL =
-            "http://10.0.2.2:8080/CalorieTrackerWS/webresources/";
+            "http://118.139.74.112:8080/CalorieTrackerWS/webresources/";
 
     public static String findCredentialByUsernameAndPasswordHash(String username, String password)
     {
@@ -57,7 +57,7 @@ public class RestClient {
 
     public static String findCredentialByUsername(String username)
     {
-        final String methodPath = "restws.credential/{id}/" + username;
+        final String methodPath = "restws.credential/findByUsername/" + username;
         //initialise
         URL url;
         HttpURLConnection conn = null;
@@ -151,7 +151,6 @@ public class RestClient {
             //read the input stream and store it as string
             while (inStream.hasNextLine()) {
                 testResult.append(inStream.nextLine());
-                Log.i("results ", testResult.toString());
             }
         } catch (Exception e) {
             e.printStackTrace();

@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
@@ -32,7 +33,7 @@ import java.util.List;
 public class SignUpFragment extends Fragment {
      View vSignUp;
 
-     public View onCreateView(LayoutInflater inflater, ViewGroup container,
+     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                               Bundle savedInstanceState) {
          vSignUp = inflater.inflate(R.layout.fragment_sign_up, container, false);
 
@@ -57,8 +58,11 @@ public class SignUpFragment extends Fragment {
          postcodeList.add("3000 - Melbourne City");
          postcodeList.add("3006 - South Bank");
          postcodeList.add("3141 - South Yarra");
+         postcodeList.add("3142 - Toorak");
          postcodeList.add("3145 - Caulfield East");
-         postcodeList.add("3800 - Clayton");
+         postcodeList.add("3162 - Caulfield");
+         postcodeList.add("3163 - Canegie");
+         postcodeList.add("3168 - Clayton");
          ArrayAdapter<String> postcodeAdapter = new ArrayAdapter<>(getActivity(),
                  android.R.layout.simple_spinner_item, postcodeList);
          postcodeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -196,7 +200,7 @@ public class SignUpFragment extends Fragment {
         protected String doInBackground(String... params) {
             String findUsername = RestClient.findCredentialByUsername(params[0]);
             String findEmail = RestClient.findUserByEmail(params[1]);
-            if (!findUsername.equals(""))
+            if (!findUsername.equals("[]"))
                 return "Username is already exist, please try another one.";
             if (!findEmail.equals("[]"))
                 return "Email is already exist, please try another one.";

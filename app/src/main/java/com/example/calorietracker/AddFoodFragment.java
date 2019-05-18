@@ -60,17 +60,17 @@ public class AddFoodFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 EditText etFoodName = vAddFood.findViewById(R.id.et_food_name);
-                final String foodName = etFoodName.getText().toString();
+                final String foodName = etFoodName.getText().toString().toLowerCase();
                 if (foodName.isEmpty()) {
                     etFoodName.setError("Food cannot be empty");
                     return;
                 }
-                ArrayList<String> names = new ArrayList<String>(){{
-                    add(foodName);
-                    add(foodName + "s");
-                    add(foodName + "es");
-                    add(foodName.substring(0,-1) + "ies");
-                }};
+
+                ArrayList<String> names = new ArrayList<>();
+                    names.add(foodName);
+                    names.add(foodName + "s");
+                    names.add(foodName + "es");
+                    names.add(foodName.substring(0,foodName.length()-1) + "ies");
                 for (Food food : finalFoods){
                     if (names.contains(food.getFoodname())){
                         etFoodName.setError("Food is already exist.");
