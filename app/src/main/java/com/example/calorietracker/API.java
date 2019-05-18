@@ -99,13 +99,13 @@ public class API {
         return textResult.toString();
     }
 
-    public static String getSnippet(String result) {
+    public static String getSnippet(String result,int index) {
         String snippet = null;
         try{
             JSONObject jsonObject = new JSONObject(result);
             JSONArray jsonArray = jsonObject.getJSONArray("items");
-            if(jsonArray != null && jsonArray.length() > 0)
-                snippet =jsonArray.getJSONObject(0).getString("snippet");
+            if(jsonArray != null && jsonArray.length() > index)
+                snippet =jsonArray.getJSONObject(index).getString("snippet");
         }catch (Exception e){
             e.printStackTrace();
             snippet = "NO INFO FOUND";
@@ -123,13 +123,13 @@ public class API {
         return snippet;
     }
 
-    public static String getImageSrc(String result) {
+    public static String getImageSrc(String result, int index) {
         String imageSrc = null;
         try{
             JSONObject jsonObject = new JSONObject(result);
             JSONArray jsonArray = jsonObject.getJSONArray("items");
-            if(jsonArray != null && jsonArray.length() > 0) {
-                jsonObject = jsonArray.getJSONObject(0).getJSONObject("pagemap");
+            if(jsonArray != null && jsonArray.length() > index) {
+                jsonObject = jsonArray.getJSONObject(index).getJSONObject("pagemap");
                 jsonArray = jsonObject.getJSONArray("cse_thumbnail");
                 imageSrc = jsonArray.getJSONObject(0).getString("src");
             }

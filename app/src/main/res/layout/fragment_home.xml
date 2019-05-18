@@ -32,6 +32,7 @@
         android:id="@+id/tv_goal"/>
 
     <TextView
+        android:layout_marginTop="10pt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="  Change daily calorie goal to (KJ): "/>
@@ -51,8 +52,9 @@
         android:text="@string/set"/>
     
     <ImageView
+        android:layout_marginTop="10pt"
         android:layout_width="wrap_content"
-        android:layout_height="100pt"
+        android:layout_height="120pt"
         android:src="@drawable/home_diet"
         android:contentDescription="@string/home_diet" />
     

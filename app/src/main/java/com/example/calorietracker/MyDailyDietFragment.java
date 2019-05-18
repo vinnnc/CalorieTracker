@@ -182,28 +182,32 @@ public class MyDailyDietFragment extends Fragment {
     }
 
     @SuppressLint("StaticFieldLeak")
-    private class SearchAsyncTask extends AsyncTask<String, Void, String> {
+    private class SearchAsyncTask extends AsyncTask<String, Void, String[]> {
+        private final ArrayList<String> special = new ArrayList<String>(){{
+            add("apple");
+            add("kiwi");
+            add("apples");
+            add("kiwis)");
+        }};
 
         @Override
-        protected String doInBackground(String... params) {
-            ArrayList<String> special = new ArrayList<String>(){{
-                add("apple");
-                add("kiwi");
-                add("apples");
-                add("kiwis)");
-            }};
+        protected String[] doInBackground(String... params) {
             String number = "1";
             if (special.contains(params[0].toLowerCase()))
                 number = "2";
-            return API.search(params[0], new String[]{"num"}, new String[]{number});
+            return new String[]{API.search(params[0], new String[]{"num"}, new String[]{number}),
+                    params[0]};
         }
 
         @Override
-        protected void onPostExecute(String result) {
+        protected void onPostExecute(String[] result) {
+            int index = 0;
+            if (special.contains(result[1].toLowerCase()))
+                index = 1;
             TextView tvDescription = vMyDailyFragment.findViewById(R.id.tv_description);
-            tvDescription.setText(API.getSnippet(result));
+            tvDescription.setText(API.getSnippet(result[0], index));
             DownloadImageTask downloadImageTask = new DownloadImageTask();
-            downloadImageTask.execute(API.getImageSrc(result));
+            downloadImageTask.execute(API.getImageSrc(result[0], index));
         }
     }
 

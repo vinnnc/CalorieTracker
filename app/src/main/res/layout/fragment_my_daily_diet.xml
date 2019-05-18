@@ -5,7 +5,7 @@
     android:orientation="vertical">
 
     <TextView
-        android:layout_marginTop="30pt"
+        android:layout_marginTop="20pt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="My Daily Diet"
@@ -52,7 +52,8 @@
         android:layout_marginTop="10pt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="  Quantity you consumed: "/>
+        android:text="  Quantity you consumed: "
+        android:id="@+id/tv_quantity"/>
 
     <EditText
         android:layout_width="match_parent"
