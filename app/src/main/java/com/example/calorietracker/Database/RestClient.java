@@ -16,7 +16,7 @@ import java.util.Scanner;
 
 public class RestClient {
     private final static String BASE_URL =
-            "http://118.139.74.112:8080/CalorieTrackerWS/webresources/";
+            "http://10.0.2.2:8080/CalorieTrackerWS/webresources/";
 
     public static String findCredentialByUsernameAndPasswordHash(String username, String password)
     {

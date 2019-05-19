@@ -106,7 +106,8 @@ public class SignUpFragment extends Fragment {
                  String firstName = etFirstName.getText().toString();
                  String surname = etSurname.getText().toString();
                  String email = etEmail.getText().toString();
-                 String dob = dpDob.getYear() + "-" + dpDob.getMonth() + "-" + dpDob.getDayOfMonth();
+                 String dob = dpDob.getYear() + "-" + dpDob.getMonth() + "-"
+                         + dpDob.getDayOfMonth();
                  String height = etHeight.getText().toString();
                  String weight = etWeight.getText().toString();
                  RadioButton rbGender = vSignUp.findViewById(rgGender.getCheckedRadioButtonId());
@@ -199,7 +200,7 @@ public class SignUpFragment extends Fragment {
         @Override
         protected String doInBackground(String... params) {
             String findUsername = RestClient.findCredentialByUsername(params[0]);
-            String findEmail = RestClient.findUserByEmail(params[1]);
+            String findEmail = RestClient.findUserByEmail(params[4]);
             if (!findUsername.equals("[]"))
                 return "Username is already exist, please try another one.";
             if (!findEmail.equals("[]"))

@@ -19,6 +19,7 @@ import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
 import org.json.JSONArray;
@@ -129,9 +130,11 @@ public class ReportFragment extends Fragment {
             for (int c : ColorTemplate.COLORFUL_COLORS)
                 colors.add(c);
             dataSet.setColors(colors);
+            dataSet.setValueFormatter(new PercentFormatter());
             PieData data = new PieData(dataSet);
             data.setValueTextSize(11f);
             chart.setData(data);
+            chart.setUsePercentValues(true);
             chart.invalidate();
         }
     }

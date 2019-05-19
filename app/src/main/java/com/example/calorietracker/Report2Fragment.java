@@ -16,9 +16,12 @@ import android.widget.Toast;
 
 import com.example.calorietracker.Database.RestClient;
 import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.components.AxisBase;
+import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -132,7 +135,6 @@ public class Report2Fragment extends Fragment {
             BarChart chart = vReport2.findViewById(R.id.bar_chart);
             chart.getDescription().setEnabled(false);
             chart.setDrawGridBackground(false);
-            chart.getXAxis().setEnabled(false);
 
             if (result.equals("[]")) {
                 Toast.makeText(getActivity().getApplicationContext(),
@@ -141,12 +143,14 @@ public class Report2Fragment extends Fragment {
             }
             ArrayList<BarEntry> values1 = new ArrayList<>();
             ArrayList<BarEntry> values2 = new ArrayList<>();
+            final ArrayList<String> dates = new ArrayList<>();
             try {
                 JSONArray jsonArray = new JSONArray(result);
                 for (int i = 0; i < jsonArray.length(); i++) {
                     JSONObject jsonObject = jsonArray.getJSONObject(i);
                     int totalConsumed = jsonObject.getInt("totalcalconsumed");
                     int totalBurned = jsonObject.getInt("totalcalburned");
+                    dates.add(jsonObject.getString("repdate").substring(5,10));
                     values1.add(new BarEntry(i, totalConsumed));
                     values2.add(new BarEntry(i, totalBurned));
                 }
@@ -169,15 +173,31 @@ public class Report2Fragment extends Fragment {
                 BarData data = new BarData(set1, set2);
                 chart.setData(data);
             }
-            chart.getBarData().setBarWidth(0.2f);
+            chart.getBarData().setBarWidth(0.4f);
 
             // restrict the x-axis range
-            chart.getXAxis().setAxisMinimum(1);
+            chart.getXAxis().setAxisMinimum(0);
 
-            chart.getXAxis().setAxisMaximum(1 + chart.getBarData().getGroupWidth(0.08f,
+            chart.getXAxis().setAxisMaximum(0 + chart.getBarData().getGroupWidth(0.14f,
                     0.03f) * values1.size());
-            chart.groupBars(1, 0.08f, 0.03f);
+            chart.groupBars(0, 0.14f, 0.03f);
             chart.invalidate();
+
+            XAxis xAxis = chart.getXAxis();
+            xAxis.setGranularity(1f);
+            xAxis.setCenterAxisLabels(true);
+            xAxis.setValueFormatter(new IAxisValueFormatter() {
+                @Override
+                public String getFormattedValue(float value, AxisBase axis) {
+                    if (value < 0)
+                        value = 0;
+                    if (value >= dates.size())
+                        return "";
+                    return dates.get((int) value);
+                }
+            });
+            xAxis.setDrawGridLines(false);
+            xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         }
     }
 }
