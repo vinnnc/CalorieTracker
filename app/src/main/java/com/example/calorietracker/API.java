@@ -8,13 +8,13 @@ import java.net.URL;
 import java.util.Scanner;
 
 public class API {
-    private static final String GOOGLE_API_KEY = "AIzaSyCUapVuGj91DsfsdeJ3cDpnXtZ39QhyQJk";
+    private static final String GOOGLE_API_KEY = "USE YOUR OWN GOOGLE API KEY";
 
-    private static final String SEARCH_ID_CX = "008965496564990309248:zrf4tftxeb4";
+    private static final String SEARCH_ID_CX = "USE YOUR OWN GOOGLE SEARCH ID";
 
-    private static final String FOOD_API_ID = "e97ff207";
+    private static final String FOOD_API_ID = "USE YOUR OWN FOOD API ID";
 
-    private static final String FOOD_API_KEY = "b43dfc50dc08ddf02b9f5198632dd576";
+    private static final String FOOD_API_KEY = "USE YOUR OWN FOOD API KEY";
 
     public static String newFood(String keyword) {
         URL url;
